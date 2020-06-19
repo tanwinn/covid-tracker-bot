@@ -6,6 +6,7 @@ import os
 from typing import List
 
 from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from wit import Wit
 
@@ -55,7 +56,7 @@ def messenger_webhook(request: Request):
         # respond with the challenge to confirm
         resp = request.query_params.get("hub.challenge", "errored")
         APP_LOGGER.warning(f"Return challenge: {resp}")
-        return resp
+        return JSONResponse(content=resp, headers={"Content-Type": "text/html"})
     APP_LOGGER.error(
         f"Invalid Request or Verification Token: given {verify_token}, expected {FB_VERIFY_TOKEN}"
     )
