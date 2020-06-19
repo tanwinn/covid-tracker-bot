@@ -54,7 +54,7 @@ def messenger_webhook(request: Request):
         and request.query_params.get("hub.mode") == "subscribe"
     ):
         # respond with the challenge to confirm
-        resp = request.query_params.get("hub.challenge", "errored")
+        resp = int(request.query_params.get("hub.challenge", "errored"))
         APP_LOGGER.warning(f"Return challenge: {resp}")
         return JSONResponse(content=resp, headers={"Content-Type": "text/html"})
     APP_LOGGER.error(
