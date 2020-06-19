@@ -1,7 +1,7 @@
 # Covid Tracker Chatbot
 Testdrive Chatbot powered by [wit.ai](https://github.com/wit-ai/pywit) and Facebook Messenger for Covid tracker ([deployed API](https://covid-tracker-us.herokuapp.com/))
 
-Deployed: TBA
+Deployed: https://covid-tracker-chatbot.herokuapp.com/
 
 GitHub: https://github.com/tanwinn/covid-tracker-bot
 
