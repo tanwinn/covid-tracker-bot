@@ -29,7 +29,7 @@ def test_get_webhook_failed(api_client, params):
 def test_get_webhook_succeeded(api_client, token, challenge, monkeypatch):
     monkeypatch.setattr(api.main, "FB_VERIFY_TOKEN", value=token)
     response = api_client.get(
-        f"/webhook?hub.verify_token={token}&hub.challenge={challenge}"
+        f"/webhook?hub.verify_token={token}&hub.challenge={challenge}&hub.mode=subscribe"
     )
     assert response.json() == challenge
     monkeypatch.undo()
