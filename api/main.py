@@ -80,6 +80,7 @@ def messenger_post(data: Event):  # pylint: disable=unused-argument
             if messages[0]:
                 # Get the first message
                 message = messages[0]
+                APP_LOGGER.warning(f"THE MESSAGE OBJECT: \n{pf(message)}")
                 # Yay! We got a new message!
                 # We retrieve the Facebook user ID of the sender
                 fb_id = message["sender"]["id"]
