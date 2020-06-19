@@ -4,14 +4,12 @@ api.main.py
 import logging
 import os
 
-import uvicorn
 from fastapi import FastAPI, Request
 from wit import Wit
 
 # pylint: disable=logging-format-interpolation
 APP_LOGGER = logging.getLogger(__name__)
 
-CONFIG = os.environ
 # Wit.ai parameters
 WIT_TOKEN = os.environ.get("WIT_TOKEN")
 # Messenger API parameters
@@ -39,7 +37,9 @@ def messenger_webhook(request: Request):
     if verify_token == FB_VERIFY_TOKEN:
         # respond with the challenge to confirm
         return request.query_params.get("hub.challenge", "errored")
-    APP_LOGGER.error("Invalid Request or Verification Token")
+    APP_LOGGER.error(
+        f"Invalid Request or Verification Token: given {verify_token}, expected {FB_VERIFY_TOKEN}"
+    )
     return "Invalid Request or Verification Token"
 
 
@@ -48,9 +48,3 @@ def messenger_post():
     """
     Handler for webhook (currently for postback and messages)
     """
-
-
-if __name__ == "__main__":
-    uvicorn.run(
-        "api.main:app", host="127.0.0.1", log_level="debug",
-    )
