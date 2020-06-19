@@ -12,6 +12,7 @@ blue-chip = "*"
 fastapi = "*"
 pywit = "*"
 requests = "*"
+uvicorn = "*"
 
 [requires]
 python_version = "3.8"
