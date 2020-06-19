@@ -13,6 +13,7 @@ fastapi = "*"
 pywit = "*"
 requests = "*"
 uvicorn = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
