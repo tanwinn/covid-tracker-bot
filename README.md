@@ -28,9 +28,9 @@ exit # exit out of the venv
 Create a .env file in project root to store the following info
 __.env file__
 ```bash
-WIT_TOKEN=your_wit_token
-FB_PAGE_TOKEN=your_page_token
-FB_VERIFY_TOKEN=your_verify_token
+WIT_TOKEN=your_wit_token  # Wit.ai parameters
+FB_PAGE_TOKEN=your_page_token  # Messenger API parameters
+FB_VERIFY_TOKEN=your_verify_token  # A user secret to verify webhook get request
 ```
 Make sure to reset the pipenv shell to apply the change
 
