@@ -34,6 +34,8 @@ def messenger_webhook(request: Request):
     """
     verify_token = request.query_params.get("hub.verify_token")
     # check whether the verify tokens match
+    print(f"verify_token: {verify_token}, envvar: {FB_VERIFY_TOKEN}")
+    APP_LOGGER.warning(f"LOG:: verify_token: {verify_token}, envvar: {FB_VERIFY_TOKEN}")
     if verify_token == FB_VERIFY_TOKEN:
         # respond with the challenge to confirm
         return request.query_params.get("hub.challenge", "errored")
