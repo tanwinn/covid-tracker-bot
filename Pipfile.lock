@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d911092ba39b447aeae96302f5c40d10fc52a28685029129d37cabbeeddb48e5"
+            "sha256": "fdede5914ebef642e377dfa783bb9ec0f1dbfa409d85e3e560829e212388dccf"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -85,6 +85,13 @@
             ],
             "version": "==2.9"
         },
+        "prompt-toolkit": {
+            "hashes": [
+                "sha256:563d1a4140b63ff9dd587bda9557cffb2fe73650205ab6f4383092fb882e7dc8",
+                "sha256:df7e9e63aea609b1da3a65641ceaf5bc7d05e0a04de5bd45d05dbeffbabf9e04"
+            ],
+            "version": "==3.0.5"
+        },
         "pydantic": {
             "hashes": [
                 "sha256:0a1cdf24e567d42dc762d3fed399bd211a13db2e8462af9dfa93b34c41648efb",
@@ -106,13 +113,6 @@
                 "sha256:f0018613c7a0d19df3240c2a913849786f21b6539b9f23d85ce4067489dfacfa"
             ],
             "version": "==1.5.1"
-        },
-        "pywit": {
-            "hashes": [
-                "sha256:5c9b726535fdebab184cd5eb9ae8e3064f8e417f2363e9037e8a9ef1a0ad2733"
-            ],
-            "index": "pypi",
-            "version": "==0.4.0"
         },
         "requests": {
             "hashes": [
@@ -159,6 +159,13 @@
             "markers": "sys_platform != 'win32' and sys_platform != 'cygwin' and platform_python_implementation != 'PyPy'",
             "version": "==0.14.0"
         },
+        "wcwidth": {
+            "hashes": [
+                "sha256:79375666b9954d4a1a10739315816324c3e73110af9d0e102d906fdb0aec009f",
+                "sha256:8c6b5b6ee1360b842645f336d9e5d68c55817c26d3050f46b235ef2bc650e48f"
+            ],
+            "version": "==0.2.4"
+        },
         "websockets": {
             "hashes": [
                 "sha256:0e4fb4de42701340bd2353bb2eee45314651caa6ccee80dbd5f5d5978888fed5",
@@ -185,6 +192,13 @@
                 "sha256:f8a7bff6e8664afc4e6c28b983845c5bc14965030e3fb98789734d416af77c4b"
             ],
             "version": "==8.1"
+        },
+        "wit": {
+            "hashes": [
+                "sha256:153b8ac147ee0cacae2a8776bf6d87d045c48e46ff0b4eb00acd6967d5183578"
+            ],
+            "index": "pypi",
+            "version": "==6.0.0"
         }
     },
     "develop": {

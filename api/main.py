@@ -4,8 +4,10 @@ api.main.py
 import logging
 import os
 from pathlib import Path
+from pprint import pformat as pf
 from typing import List
 
+import requests
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
@@ -21,7 +23,8 @@ FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN")
 # A user secret to verify webhook get request
 FB_VERIFY_TOKEN = os.environ.get("FB_VERIFY_TOKEN")
 
-PRIVACY_POLICY_PATH = Path(__file__).parent.parent / "resources" / "pp.txt"
+ROOT = Path(__file__).joinpath("..").joinpath("..").resolve()
+PRIVACY_POLICY_PATH = ROOT / "resources" / "pp.txt"
 
 
 class Event(BaseModel):
@@ -70,7 +73,66 @@ def messenger_post(data: Event):  # pylint: disable=unused-argument
     """
     Handler for webhook (currently for postback and messages)
     """
+    if data.object == "page":
+        for entry in data.entry:
+            # get all the messages
+            messages = entry["messaging"]
+            if messages[0]:
+                # Get the first message
+                message = messages[0]
+                # Yay! We got a new message!
+                # We retrieve the Facebook user ID of the sender
+                fb_id = message["sender"]["id"]
+                # We retrieve the message content
+                text = message["message"]["text"]
+                # Let's forward the message to Wit /message
+                # and customize our response to the message in handle_message
+                response = wit_client.message(msg=text)
+                print(pf(response))
+                handle_message(response=response, fb_id=fb_id)
+    else:
+        # Returned another event
+        return "Received Different Event"
     return "dummy"
+
+
+def fb_message(sender_id, text):
+    """
+    Function for returning response to messenger
+    """
+    data = {"recipient": {"id": sender_id}, "message": {"text": text}}
+    # Setup the query string with your PAGE TOKEN
+    qs = "access_token=" + FB_PAGE_TOKEN
+    # Send POST request to messenger
+    resp = requests.post("https://graph.facebook.com/me/messages?" + qs, json=data)
+    return resp.content
+
+
+def first_trait_value(traits, trait):
+    """
+    Returns first trait value
+    """
+    if trait not in traits:
+        return None
+    val = traits[trait][0]["value"]
+    if not val:
+        return None
+    return val
+
+
+def handle_message(response, fb_id):
+    """
+    Customizes our response to the message and sends it
+    """
+    # Checks if user's message is a greeting
+    # Otherwise we will just repeat what they sent us
+    greetings = first_trait_value(response["traits"], "wit$greetings")
+    if greetings:
+        text = "hello!"
+    else:
+        text = "We've received your message: " + response["_text"]
+    # send message
+    print(f"FB response: {pf(fb_message(fb_id, text))}")
 
 
 @app.get("/privacy-policy", response_class=HTMLResponse)
