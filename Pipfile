@@ -10,10 +10,10 @@ blue-chip = "*"
 
 [packages]
 fastapi = "*"
-pywit = "*"
 requests = "*"
 uvicorn = "*"
 gunicorn = "*"
+wit = "*"
 
 [requires]
 python_version = "3.8"
