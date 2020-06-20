@@ -131,7 +131,7 @@ def handle_message(response, fb_id):
     if greetings:
         text = "hello!"
     else:
-        text = "We've received your message: " + response["_text"]
+        text = "We've received your message: " + response["text"]
     # send message
     print(f"FB response: {pf(fb_message(fb_id, text))}")
 
