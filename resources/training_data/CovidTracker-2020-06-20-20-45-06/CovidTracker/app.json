@@ -1,0 +1,7 @@
+{
+    "version": 20200513,
+    "zip-command": "zip CovidTracker.zip CovidTracker\/app.json CovidTracker\/entities\/*.json CovidTracker\/intents\/*.json CovidTracker\/traits\/*.json CovidTracker\/utterances\/*.json",
+    "name": "CovidTracker",
+    "lang": "en",
+    "timezone": "America\/Los_Angeles"
+}

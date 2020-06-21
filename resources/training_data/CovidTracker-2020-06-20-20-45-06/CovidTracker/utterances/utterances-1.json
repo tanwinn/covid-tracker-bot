@@ -1,0 +1,157 @@
+{
+    "utterances": [
+        {
+            "text": "Getting Started",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "helo",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "hello",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "hi",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "covid19",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "Hello",
+            "entities": [],
+            "traits": [
+                {
+                    "trait": "wit$greetings",
+                    "value": "true"
+                },
+                {
+                    "trait": "wit$on_off",
+                    "value": "on"
+                }
+            ],
+            "intent": "getting_started"
+        },
+        {
+            "text": "Get me cases of the US last month",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 20,
+                    "end": 23,
+                    "body": "US ",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 23,
+                    "end": 33,
+                    "body": "last month",
+                    "entities": []
+                }
+            ],
+            "traits": []
+        },
+        {
+            "text": "Japan last year",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 0,
+                    "end": 5,
+                    "body": "Japan",
+                    "entities": []
+                },
+                {
+                    "entity": "wit$datetime:datetime",
+                    "start": 6,
+                    "end": 15,
+                    "body": "last year",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "get_by_country"
+        },
+        {
+            "text": "what are you",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "Howdy",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "What's up",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "Help",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "Thailand, Korea",
+            "entities": [
+                {
+                    "entity": "wit$location:location",
+                    "start": 0,
+                    "end": 15,
+                    "body": "Thailand, Korea",
+                    "entities": []
+                }
+            ],
+            "traits": [],
+            "intent": "get_by_country"
+        },
+        {
+            "text": "how do I use you",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "Can you help me",
+            "entities": [],
+            "traits": [
+                {
+                    "trait": "wit$on_off",
+                    "value": "on"
+                }
+            ],
+            "intent": "getting_started"
+        },
+        {
+            "text": "help please",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        },
+        {
+            "text": "greeting",
+            "entities": [],
+            "traits": [],
+            "intent": "getting_started"
+        }
+    ]
+}

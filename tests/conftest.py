@@ -13,6 +13,8 @@ from api import main
 
 ROOT = Path(__file__).joinpath("..").joinpath("..").resolve()
 TEST_DATA_PATH = ROOT / "tests" / "data"
+FACEBOOK_TEST_DATA_PATH = TEST_DATA_PATH / "facebook"
+WIT_TEST_DATA_PATH = TEST_DATA_PATH / "wit"
 
 
 @pytest.fixture(scope="session")
@@ -26,9 +28,9 @@ def api_client():
     return TestClient(main.app)
 
 
-# Test data
+# Facebook Test data
 
-with open(str(TEST_DATA_PATH / "messaging_data.json")) as outfile:
+with open(str(FACEBOOK_TEST_DATA_PATH / "messaging_data.json")) as outfile:
     MESSAGING_DATA = json.load(outfile)
     INVALID_MESSAGING_DATA = MESSAGING_DATA.get("invalid")
     VALID_MESSAGING_DATA = MESSAGING_DATA.get("valid")
@@ -46,7 +48,7 @@ def test_data_invalid_messaging(request):
     return request.param
 
 
-with open(str(TEST_DATA_PATH / "message_data.json")) as outfile:
+with open(str(FACEBOOK_TEST_DATA_PATH / "message_data.json")) as outfile:
     MESSAGE_DATA = json.load(outfile)
     INVALID_MESSAGE_DATA = MESSAGE_DATA.get("invalid")
     VALID_MESSAGE_DATA = MESSAGE_DATA.get("valid")
@@ -64,7 +66,7 @@ def test_data_invalid_message(request):
     return request.param
 
 
-with open(str(TEST_DATA_PATH / "event_data.json")) as outfile:
+with open(str(FACEBOOK_TEST_DATA_PATH / "event_data.json")) as outfile:
     EVENT_DATA = json.load(outfile)
     INVALID_EVENT_DATA = EVENT_DATA.get("invalid")
     VALID_EVENT_DATA = EVENT_DATA.get("valid")
@@ -79,4 +81,17 @@ def test_data_valid_event(request):
 @pytest.fixture(scope="session", params=INVALID_EVENT_DATA)
 def test_data_invalid_event(request):
     """Test data for invalid event models"""
+    return request.param
+
+
+# Wit Test Data
+with open(str(WIT_TEST_DATA_PATH / "text_meaning_data.json")) as outfile:
+    TEXT_MEANING_DATA = json.load(outfile)
+    INVALID_TEXT_MEANING_DATA = EVENT_DATA.get("invalid")
+    VALID_TEXT_MEANING_DATA = EVENT_DATA.get("valid")
+
+
+@pytest.fixture(scope="session", params=VALID_TEXT_MEANING_DATA)
+def test_data_valid_text_meaning(request):
+    """Test data for valid TextMeaning models"""
     return request.param

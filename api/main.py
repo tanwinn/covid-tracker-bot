@@ -11,10 +11,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from wit import Wit
 
-from api import models
+from models import facebook
 
 # pylint: disable=logging-format-interpolation
 APP_LOGGER = logging.getLogger(__name__)
+
 
 # Wit.ai parameters
 WIT_TOKEN = os.environ.get("WIT_TOKEN")
@@ -53,7 +54,7 @@ def messenger_webhook(request: Request):
             resp = int(request.query_params.get("hub.challenge", "errored"))
         except ValueError:
             resp = request.query_params.get("hub.challenge", "errored")
-        APP_LOGGER.debug(f"Return challenge: {type(resp)} {resp}")
+        APP_LOGGER.info(f"Return challenge: {type(resp)} {resp}")
         return JSONResponse(content=resp, headers={"Content-Type": "text/html"})
     APP_LOGGER.error(
         f"Invalid Request or Verification Token: given {verify_token}, expected {FB_VERIFY_TOKEN}"
@@ -62,7 +63,7 @@ def messenger_webhook(request: Request):
 
 
 @app.post("/webhook")
-def messenger_post(data: models.Event):  # pylint: disable=unused-argument
+def messenger_post(data: facebook.Event):  # pylint: disable=unused-argument
     """
     Handler for webhook (currently for postback and messages)
     """
@@ -72,7 +73,7 @@ def messenger_post(data: models.Event):  # pylint: disable=unused-argument
         if messages[0]:
             # Get the first message
             message = messages[0]
-            APP_LOGGER.warning(f"THE MESSAGE OBJECT: \n{pf(message)}")
+            APP_LOGGER.info(f"Message object: \n{pf(message.message.dict())}")
             # Yay! We got a new message!
             # We retrieve the Facebook user ID of the sender
             fb_id = message.sender.id
@@ -81,7 +82,7 @@ def messenger_post(data: models.Event):  # pylint: disable=unused-argument
             # Let's forward the message to Wit /message
             # and customize our response to the message in handle_message
             response = wit_client.message(msg=text)
-            print(pf(response))
+            APP_LOGGER.info(f"WIT response:\n{pf(response)}")
             handle_message(response=response, fb_id=fb_id)
     return "dummy"
 
@@ -95,7 +96,7 @@ def fb_message(sender_id, text):
     qs = "access_token=" + FB_PAGE_TOKEN
     # Send POST request to messenger
     resp = requests.post("https://graph.facebook.com/me/messages?" + qs, json=data)
-    return resp.content
+    return resp.json()
 
 
 def first_trait_value(traits, trait):
@@ -122,7 +123,7 @@ def handle_message(response, fb_id):
     else:
         text = "We've received your message: " + response["text"]
     # send message
-    print(f"FB response: {pf(fb_message(fb_id, text))}")
+    APP_LOGGER.info(f"FB response after POST:\n{pf(fb_message(fb_id, text))}")
 
 
 @app.get("/privacy-policy", response_class=HTMLResponse)

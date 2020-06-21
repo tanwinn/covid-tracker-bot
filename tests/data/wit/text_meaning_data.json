@@ -1,0 +1,126 @@
+{
+    "valid": [
+        {
+            "entities":{
+                "wit$datetime:datetime":[
+                    {
+                        "body":"last year",
+                        "confidence":0.9699,
+                        "end":15,
+                        "entities":[
+
+                        ],
+                        "grain":"year",
+                        "id":"e88da181-897a-4f5d-ae61-e4413fca38d6",
+                        "name":"wit$datetime",
+                        "role":"datetime",
+                        "start":6,
+                        "type":"value",
+                        "value":"2019-01-01T00:00:00.000-08:00",
+                        "values":[
+                            {
+                                "grain":"year",
+                                "type":"value",
+                                "value":"2019-01-01T00:00:00.000-08:00"
+                            }
+                        ]
+                    }
+                ],
+                "wit$location:location":[
+                    {
+                        "body":"Japan",
+                        "confidence":0.93,
+                        "end":5,
+                        "entities":[
+
+                        ],
+                        "id":"ab33802d-918e-4429-a2e0-bf831075b81d",
+                        "name":"wit$location",
+                        "resolved":{
+                            "values":[
+                                {
+                                    "attributes":{
+
+                                    },
+                                    "coords":{
+                                        "lat":35.685359954834,
+                                        "long":139.75309753418
+                                    },
+                                    "domain":"country",
+                                    "external":{
+                                        "geonames":"1861060",
+                                        "wikidata":"Q17",
+                                        "wikipedia":"Japan"
+                                    },
+                                    "name":"Japan",
+                                    "timezone":"Asia/Tokyo"
+                                },
+                                {
+                                    "attributes":{
+
+                                    },
+                                    "coords":{
+                                        "lat":35.368141174316,
+                                        "long":139.458984375
+                                    },
+                                    "domain":"region",
+                                    "external":{
+                                        "geonames":"1864091",
+                                        "wikidata":"Q49103555"
+                                    },
+                                    "name":"Fujisawa Shi",
+                                    "timezone":"Asia/Tokyo"
+                                },
+                                {
+                                    "attributes":{
+
+                                    },
+                                    "coords":{
+                                        "lat":35.402828216553,
+                                        "long":136.87829589844
+                                    },
+                                    "domain":"region",
+                                    "external":{
+                                        "geonames":"1860734",
+                                        "wikidata":"Q49105150"
+                                    },
+                                    "name":"Kakamigahara-shi",
+                                    "timezone":"Asia/Tokyo"
+                                }
+                            ]
+                        },
+                        "role":"location",
+                        "start":0,
+                        "type":"resolved"
+                    }
+                ]
+            },
+            "intents":[
+                {
+                    "confidence":0.989,
+                    "id":"746550799423588",
+                    "name":"get_by_country"
+                }
+            ],
+            "text":"Japan last year",
+            "traits":{
+                "wit$on_off":[
+                    {
+                        "confidence":0.857,
+                        "id":"535a80f0-6922-4680-b678-0576f248cdcc",
+                        "value":"on"
+                    }
+                ],
+                "wit$sentiment":[
+                    {
+                        "confidence":0.6564,
+                        "id":"5ac2b50a-44e4-466e-9d49-bad6bd40092c",
+                        "value":"neutral"
+                    }
+                ]
+            }
+        }
+    ],
+    "invalid": []
+}
+    

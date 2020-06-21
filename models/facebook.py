@@ -1,5 +1,7 @@
 """
-api.models.py
+models.facebook.py
+~~~~~~~~~~~~~~~~~~~~~~
+Facebook Message models
 """
 from typing import Dict, List
 
@@ -7,7 +9,7 @@ from pydantic import BaseModel, Field, root_validator, validator
 
 
 class User(BaseModel):
-    """Facebook user emodel"""
+    """User model"""
 
     id: str
 
