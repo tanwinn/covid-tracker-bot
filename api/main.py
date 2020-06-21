@@ -24,7 +24,7 @@ ROOT = Path(__file__).joinpath("..").joinpath("..").resolve()
 PRIVACY_POLICY_PATH = ROOT / "resources" / "pp.html"
 
 
-app = FastAPI(
+APP = FastAPI(
     title="Covid Tracking Bot",
     description="A Chatbot that tracks covid cases (testdrive)",
     docs_url="/",
@@ -33,7 +33,7 @@ app = FastAPI(
 )
 
 
-@app.get("/webhook")
+@APP.get("/webhook")
 def messenger_webhook(request: Request):
     """
     A webhook to return a challenge
@@ -58,7 +58,7 @@ def messenger_webhook(request: Request):
     return "Invalid Request or Verification Token"
 
 
-@app.post("/webhook")
+@APP.post("/webhook")
 def messenger_post(data: facebook.Event):
     """
     Handler for webhook (currently for postback and messages)
@@ -80,7 +80,7 @@ def messenger_post(data: facebook.Event):
     return "dummy"
 
 
-@app.get("/privacy-policy", response_class=HTMLResponse)
+@APP.get("/privacy-policy", response_class=HTMLResponse)
 def get_privacy_policy():
     with open(PRIVACY_POLICY_PATH) as rfile:
         return rfile.read()

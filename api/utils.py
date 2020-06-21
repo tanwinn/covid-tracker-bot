@@ -22,7 +22,7 @@ FB_GRAPH_API = "https://graph.facebook.com/me/messages?"
 # pylint: disable=logging-format-interpolation
 UTILS_LOGGER = logging.getLogger(__name__)
 
-wit_client = Wit(WIT_TOKEN)
+WIT_CLIENT = Wit(WIT_TOKEN)
 
 
 def fb_message(sender_id, text):
@@ -46,7 +46,7 @@ def handle_user_message(fb_message_object):
     text = fb_message_object.message.text
     # Let's forward the message to Wit /message
     # and customize our response to the message in handle_message
-    response = wit_client.message(msg=text)
+    response = WIT_CLIENT.message(msg=text)
     UTILS_LOGGER.warning(f"WIT response:\n{pf(response)}")
     # Checks if user's message is a greeting
     # Otherwise we will just repeat what they sent us
