@@ -38,13 +38,15 @@ def fb_message(sender_id, text):
     return resp.json()
 
 
-def handle_user_message(user_msg):
+def handle_user_message(fb_message_object):
     """
     Interpret user_msg's intent & entities using Wit
     """
+    # We retrieve the message content
+    text = fb_message_object.message.text
     # Let's forward the message to Wit /message
     # and customize our response to the message in handle_message
-    response = wit_client.message(msg=user_msg)
+    response = wit_client.message(msg=text)
     UTILS_LOGGER.warning(f"WIT response:\n{pf(response)}")
     # Checks if user's message is a greeting
     # Otherwise we will just repeat what they sent us

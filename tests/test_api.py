@@ -5,6 +5,8 @@ Test api calls
 """
 
 import pytest
+import json
+from pprint import pformat as pf
 
 import api
 
@@ -47,3 +49,9 @@ def test_get_webhook_succeeded(api_client, token, challenge, monkeypatch):
 
 def test_get_privacy_policy(api_client):
     assert api_client.get("/privacy-policy").status_code == 200
+
+
+def test_post_message_200_resp_valid_data(api_client, test_data_valid_event):
+    resp = api_client.post(f"/webhook", data=json.dumps(test_data_valid_event))
+    print(f"Response: \n{pf(resp.json())}")
+    assert resp.status_code == 200
