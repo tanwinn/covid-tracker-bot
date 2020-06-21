@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 from fastapi.testclient import TestClient
 
 from api import main
@@ -26,6 +27,15 @@ def test_data_path():
 def api_client():
     """FastAPI testing client"""
     return TestClient(main.app)
+
+
+@pytest.fixture()
+def mocked_200_response():
+    resp = requests.models.Response()
+    resp.status_code = 200
+    resp._content = b'{"msg": "this is the mocked content"}'
+    print(resp.json())
+    yield resp
 
 
 # Facebook Test data
@@ -81,6 +91,24 @@ def test_data_valid_event(request):
 @pytest.fixture(scope="session", params=INVALID_EVENT_DATA)
 def test_data_invalid_event(request):
     """Test data for invalid event models"""
+    return request.param
+
+
+with open(str(FACEBOOK_TEST_DATA_PATH / "response_message_data.json")) as outfile:
+    RESPONSE_MESSAGE_DATA = json.load(outfile)
+    INVALID_RESPONSE_MESSAGE_DATA = RESPONSE_MESSAGE_DATA.get("invalid")
+    VALID_RESPONSE_MESSAGE_DATA = RESPONSE_MESSAGE_DATA.get("valid")
+
+
+@pytest.fixture(scope="session", params=VALID_RESPONSE_MESSAGE_DATA)
+def test_data_valid_response_message(request):
+    """Test data for valid ResponseMessage models"""
+    return request.param
+
+
+@pytest.fixture(scope="session", params=INVALID_RESPONSE_MESSAGE_DATA)
+def test_data_invalid_response_message(request):
+    """Test data for invalid ResponseMessage models"""
     return request.param
 
 

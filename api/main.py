@@ -6,19 +6,15 @@ import os
 from pathlib import Path
 from pprint import pformat as pf
 
-import requests
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
-from wit import Wit
 
+from api import utils
 from models import facebook
 
 # pylint: disable=logging-format-interpolation
 APP_LOGGER = logging.getLogger(__name__)
 
-
-# Wit.ai parameters
-WIT_TOKEN = os.environ.get("WIT_TOKEN")
 # Messenger API parameters
 FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN")
 # A user secret to verify webhook get request
@@ -35,7 +31,6 @@ app = FastAPI(
     redoc_url="/docs",
     version="0.0.32",
 )
-wit_client = Wit(WIT_TOKEN)
 
 
 @app.get("/webhook")
@@ -80,51 +75,11 @@ def messenger_post(data: facebook.Event):  # pylint: disable=unused-argument
             fb_id = message.sender.id
             # We retrieve the message content
             text = message.message.text
-            # Let's forward the message to Wit /message
-            # and customize our response to the message in handle_message
-            response = wit_client.message(msg=text)
-            APP_LOGGER.warning(f"WIT response:\n{pf(response)}")
-            handle_message(response=response, fb_id=fb_id)
+            text = utils.handle_user_message(user_msg=text)
+            # send message
+            fb_post_resp = utils.fb_message(fb_id, text)
+            APP_LOGGER.warning(f"FB response after POST:\n{pf(fb_post_resp)}")
     return "dummy"
-
-
-def fb_message(sender_id, text):
-    """
-    Function for returning response to messenger
-    """
-    data = {"recipient": {"id": sender_id}, "message": {"text": text}}
-    # Setup the query string with your PAGE TOKEN
-    qs = "access_token=" + FB_PAGE_TOKEN
-    # Send POST request to messenger
-    resp = requests.post("https://graph.facebook.com/me/messages?" + qs, json=data)
-    return resp.json()
-
-
-def first_trait_value(traits, trait):
-    """
-    Returns first trait value
-    """
-    if trait not in traits:
-        return None
-    val = traits[trait][0]["value"]
-    if not val:
-        return None
-    return val
-
-
-def handle_message(response, fb_id):
-    """
-    Customizes our response to the message and sends it
-    """
-    # Checks if user's message is a greeting
-    # Otherwise we will just repeat what they sent us
-    greetings = first_trait_value(response["traits"], "wit$greetings")
-    if greetings:
-        text = "hello!"
-    else:
-        text = "We've received your message: " + response["text"]
-    # send message
-    APP_LOGGER.warning(f"FB response after POST:\n{pf(fb_message(fb_id, text))}")
 
 
 @app.get("/privacy-policy", response_class=HTMLResponse)
