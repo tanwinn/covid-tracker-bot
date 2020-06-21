@@ -59,7 +59,7 @@ def messenger_webhook(request: Request):
 
 
 @app.post("/webhook")
-def messenger_post(data: facebook.Event):  # pylint: disable=unused-argument
+def messenger_post(data: facebook.Event):
     """
     Handler for webhook (currently for postback and messages)
     """
@@ -71,11 +71,9 @@ def messenger_post(data: facebook.Event):  # pylint: disable=unused-argument
             message = messages[0]
             APP_LOGGER.warning(f"Message object: \n{pf(message.message.dict())}")
             # Yay! We got a new message!
+            text = utils.handle_user_message(message)
             # We retrieve the Facebook user ID of the sender
             fb_id = message.sender.id
-            # We retrieve the message content
-            text = message.message.text
-            text = utils.handle_user_message(user_msg=text)
             # send message
             fb_post_resp = utils.fb_message(fb_id, text)
             APP_LOGGER.warning(f"FB response after POST:\n{pf(fb_post_resp)}")
