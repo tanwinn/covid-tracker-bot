@@ -33,6 +33,7 @@ app = FastAPI(
     description="A Chatbot that tracks covid cases (testdrive)",
     docs_url="/",
     redoc_url="/docs",
+    version="0.0.32",
 )
 wit_client = Wit(WIT_TOKEN)
 
@@ -54,7 +55,7 @@ def messenger_webhook(request: Request):
             resp = int(request.query_params.get("hub.challenge", "errored"))
         except ValueError:
             resp = request.query_params.get("hub.challenge", "errored")
-        APP_LOGGER.info(f"Return challenge: {type(resp)} {resp}")
+        APP_LOGGER.warning(f"Return challenge: {type(resp)} {resp}")
         return JSONResponse(content=resp, headers={"Content-Type": "text/html"})
     APP_LOGGER.error(
         f"Invalid Request or Verification Token: given {verify_token}, expected {FB_VERIFY_TOKEN}"
@@ -73,7 +74,7 @@ def messenger_post(data: facebook.Event):  # pylint: disable=unused-argument
         if messages[0]:
             # Get the first message
             message = messages[0]
-            APP_LOGGER.info(f"Message object: \n{pf(message.message.dict())}")
+            APP_LOGGER.warning(f"Message object: \n{pf(message.message.dict())}")
             # Yay! We got a new message!
             # We retrieve the Facebook user ID of the sender
             fb_id = message.sender.id
@@ -82,7 +83,7 @@ def messenger_post(data: facebook.Event):  # pylint: disable=unused-argument
             # Let's forward the message to Wit /message
             # and customize our response to the message in handle_message
             response = wit_client.message(msg=text)
-            APP_LOGGER.info(f"WIT response:\n{pf(response)}")
+            APP_LOGGER.warning(f"WIT response:\n{pf(response)}")
             handle_message(response=response, fb_id=fb_id)
     return "dummy"
 
@@ -123,7 +124,7 @@ def handle_message(response, fb_id):
     else:
         text = "We've received your message: " + response["text"]
     # send message
-    APP_LOGGER.info(f"FB response after POST:\n{pf(fb_message(fb_id, text))}")
+    APP_LOGGER.warning(f"FB response after POST:\n{pf(fb_message(fb_id, text))}")
 
 
 @app.get("/privacy-policy", response_class=HTMLResponse)
