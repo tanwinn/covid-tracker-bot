@@ -9,7 +9,7 @@ from pprint import pformat as pf
 import pytest
 from pydantic.error_wrappers import ValidationError
 
-from models import facebook
+from models import facebook, wit
 
 
 class TestFacebook:
@@ -55,4 +55,4 @@ class TestWit:
 
     def test_valid_text_meaning(self, test_data_valid_text_meaning):
         print(f"Test Data:\n{pf(test_data_valid_text_meaning)}")
-        facebook.Event(**test_data_valid_text_meaning)
+        wit.TextMeaning(**test_data_valid_text_meaning)

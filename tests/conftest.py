@@ -87,8 +87,8 @@ def test_data_invalid_event(request):
 # Wit Test Data
 with open(str(WIT_TEST_DATA_PATH / "text_meaning_data.json")) as outfile:
     TEXT_MEANING_DATA = json.load(outfile)
-    INVALID_TEXT_MEANING_DATA = EVENT_DATA.get("invalid")
-    VALID_TEXT_MEANING_DATA = EVENT_DATA.get("valid")
+    INVALID_TEXT_MEANING_DATA = TEXT_MEANING_DATA.get("invalid")
+    VALID_TEXT_MEANING_DATA = TEXT_MEANING_DATA.get("valid")
 
 
 @pytest.fixture(scope="session", params=VALID_TEXT_MEANING_DATA)

@@ -7,9 +7,7 @@
                         "body":"last year",
                         "confidence":0.9699,
                         "end":15,
-                        "entities":[
-
-                        ],
+                        "entities":[],
                         "grain":"year",
                         "id":"e88da181-897a-4f5d-ae61-e4413fca38d6",
                         "name":"wit$datetime",
@@ -36,12 +34,10 @@
                         ],
                         "id":"ab33802d-918e-4429-a2e0-bf831075b81d",
                         "name":"wit$location",
-                        "resolved":{
+                    "resolved":{
                             "values":[
                                 {
-                                    "attributes":{
-
-                                    },
+                                    "attributes":{},
                                     "coords":{
                                         "lat":35.685359954834,
                                         "long":139.75309753418
@@ -56,9 +52,7 @@
                                     "timezone":"Asia/Tokyo"
                                 },
                                 {
-                                    "attributes":{
-
-                                    },
+                                    "attributes":{},
                                     "coords":{
                                         "lat":35.368141174316,
                                         "long":139.458984375
@@ -72,9 +66,7 @@
                                     "timezone":"Asia/Tokyo"
                                 },
                                 {
-                                    "attributes":{
-
-                                    },
+                                    "attributes":{},
                                     "coords":{
                                         "lat":35.402828216553,
                                         "long":136.87829589844
@@ -119,8 +111,312 @@
                     }
                 ]
             }
+        },
+        {
+            "entities":{
+                "wit$datetime:datetime":[
+                    {
+                        "body":"last month",
+                        "confidence":0.961,
+                        "end":24,
+                        "entities":[
+        
+                        ],
+                        "grain":"month",
+                        "id":"e88da181-897a-4f5d-ae61-e4413fca38d6",
+                        "name":"wit$datetime",
+                        "role":"datetime",
+                        "start":14,
+                        "type":"value",
+                        "value":"2020-05-01T00:00:00.000-07:00",
+                        "values":[
+                            {
+                                "grain":"month",
+                                "type":"value",
+                                "value":"2020-05-01T00:00:00.000-07:00"
+                            }
+                        ]
+                    }
+                ],
+                "wit$location:location":[
+                    {
+                        "body":"Japan",
+                        "confidence":0.9328,
+                        "end":5,
+                        "entities":[
+        
+                        ],
+                        "id":"ab33802d-918e-4429-a2e0-bf831075b81d",
+                        "name":"wit$location",
+                        "resolved":{
+                            "values":[
+                                {
+                                    "attributes":{
+        
+                                    },
+                                    "coords":{
+                                        "lat":35.685359954834,
+                                        "long":139.75309753418
+                                    },
+                                    "domain":"country",
+                                    "external":{
+                                        "geonames":"1861060",
+                                        "wikidata":"Q17",
+                                        "wikipedia":"Japan"
+                                    },
+                                    "name":"Japan",
+                                    "timezone":"Asia/Tokyo"
+                                },
+                                {
+                                    "attributes":{
+        
+                                    },
+                                    "coords":{
+                                        "lat":35.368141174316,
+                                        "long":139.458984375
+                                    },
+                                    "domain":"region",
+                                    "external":{
+                                        "geonames":"1864091",
+                                        "wikidata":"Q49103555"
+                                    },
+                                    "name":"Fujisawa Shi",
+                                    "timezone":"Asia/Tokyo"
+                                },
+                                {
+                                    "attributes":{
+        
+                                    },
+                                    "coords":{
+                                        "lat":35.402828216553,
+                                        "long":136.87829589844
+                                    },
+                                    "domain":"region",
+                                    "external":{
+                                        "geonames":"1860734",
+                                        "wikidata":"Q49105150"
+                                    },
+                                    "name":"Kakamigahara-shi",
+                                    "timezone":"Asia/Tokyo"
+                                }
+                            ]
+                        },
+                        "role":"location",
+                        "start":0,
+                        "type":"resolved"
+                    },
+                    {
+                        "body":"USA",
+                        "confidence":0.9294,
+                        "end":13,
+                        "entities":[
+        
+                        ],
+                        "id":"ab33802d-918e-4429-a2e0-bf831075b81d",
+                        "name":"wit$location",
+                        "resolved":{
+                            "values":[
+                                {
+                                    "attributes":{
+        
+                                    },
+                                    "coords":{
+                                        "lat":39.759998321533,
+                                        "long":-98.5
+                                    },
+                                    "domain":"country",
+                                    "external":{
+                                        "geonames":"6252001",
+                                        "wikidata":"Q30",
+                                        "wikipedia":"United States"
+                                    },
+                                    "name":"United States of America"
+                                }
+                            ]
+                        },
+                        "role":"location",
+                        "start":10,
+                        "type":"resolved"
+                    }
+                ]
+            },
+            "intents":[
+                {
+                    "confidence":0.8186,
+                    "id":"746550799423588",
+                    "name":"get_by_country"
+                }
+            ],
+            "text":"Japan and USA last month",
+            "traits":{
+                "wit$on_off":[
+                    {
+                        "confidence":0.7762,
+                        "id":"535a80f0-6922-4680-b678-0576f248cdcc",
+                        "value":"off"
+                    }
+                ],
+                "wit$sentiment":[
+                    {
+                        "confidence":0.8534,
+                        "id":"5ac2b50a-44e4-466e-9d49-bad6bd40092c",
+                        "value":"neutral"
+                    }
+                ]
+            }
+        },
+        {
+            "entities":{
+                "wit$location:location":[
+                    {
+                        "body":"Hsbvshd",
+                        "confidence":0.8662,
+                        "end":7,
+                        "entities":[
+        
+                        ],
+                        "id":"ab33802d-918e-4429-a2e0-bf831075b81d",
+                        "name":"wit$location",
+                        "role":"location",
+                        "start":0,
+                        "suggested":true,
+                        "type":"value",
+                        "value":"Hsbvshd"
+                    }
+                ]
+            },
+            "intents":[
+        
+            ],
+            "text":"Hsbvshd",
+            "traits":{
+                "wit$on_off":[
+                    {
+                        "confidence":0.5537,
+                        "id":"535a80f0-6922-4680-b678-0576f248cdcc",
+                        "value":"on"
+                    }
+                ]
+            }
+        },
+        {
+            "entities":{
+                "wit$location:location":[
+                    {
+                        "body":"Thailand",
+                        "confidence":0.9352,
+                        "end":18,
+                        "entities":[
+        
+                        ],
+                        "id":"ab33802d-918e-4429-a2e0-bf831075b81d",
+                        "name":"wit$location",
+                        "resolved":{
+                            "values":[
+                                {
+                                    "attributes":{
+        
+                                    },
+                                    "coords":{
+                                        "lat":15.5,
+                                        "long":101
+                                    },
+                                    "domain":"country",
+                                    "external":{
+                                        "geonames":"1605651",
+                                        "wikidata":"Q869",
+                                        "wikipedia":"Thailand"
+                                    },
+                                    "name":"Thailand",
+                                    "timezone":"Asia/Bangkok"
+                                }
+                            ]
+                        },
+                        "role":"location",
+                        "start":10,
+                        "type":"resolved"
+                    }
+                ]
+            },
+            "intents":[
+                {
+                    "confidence":0.5022,
+                    "id":"746550799423588",
+                    "name":"get_by_country"
+                }
+            ],
+            "text":"how about Thailand?",
+            "traits":{
+                "wit$on_off":[
+                    {
+                        "confidence":0.5473,
+                        "id":"535a80f0-6922-4680-b678-0576f248cdcc",
+                        "value":"off"
+                    }
+                ],
+                "wit$sentiment":[
+                    {
+                        "confidence":0.8542,
+                        "id":"5ac2b50a-44e4-466e-9d49-bad6bd40092c",
+                        "value":"neutral"
+                    }
+                ]
+            }
+        },
+        {
+            "entities":{
+                "wit$datetime:datetime":[
+                    {
+                        "body":"about last week",
+                        "confidence":1,
+                        "end":19,
+                        "entities":[
+        
+                        ],
+                        "grain":"week",
+                        "id":"e88da181-897a-4f5d-ae61-e4413fca38d6",
+                        "name":"wit$datetime",
+                        "role":"datetime",
+                        "start":4,
+                        "type":"value",
+                        "value":"2020-06-08T00:00:00.000-07:00",
+                        "values":[
+                            {
+                                "grain":"week",
+                                "type":"value",
+                                "value":"2020-06-08T00:00:00.000-07:00"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "intents":[
+                {
+                    "confidence":0.5297,
+                    "id":"286383149181319",
+                    "name":"getting_started"
+                }
+            ],
+            "text":"how about last week?",
+            "traits":{
+                "wit$on_off":[
+                    {
+                        "confidence":0.8713,
+                        "id":"535a80f0-6922-4680-b678-0576f248cdcc",
+                        "value":"off"
+                    }
+                ],
+                "wit$sentiment":[
+                    {
+                        "confidence":0.869,
+                        "id":"5ac2b50a-44e4-466e-9d49-bad6bd40092c",
+                        "value":"neutral"
+                    }
+                ]
+            }
         }
     ],
+    
     "invalid": []
 }
     

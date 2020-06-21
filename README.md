@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/tanwinn/covid-tracker-bot/badge.svg?branch=master)](https://coveralls.io/github/tanwinn/covid-tracker-bot?branch=master)
+
 # Covid Tracker Chatbot
 Testdrive Chatbot powered by [wit.ai](https://github.com/wit-ai/pywit) and Facebook Messenger for Covid tracker ([deployed API](https://covid-tracker-us.herokuapp.com/))
 
