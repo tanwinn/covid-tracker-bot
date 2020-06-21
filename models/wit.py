@@ -6,7 +6,7 @@ Wit models
 import enum
 from typing import Dict, List
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, root_validator
 
 
 class Coordinations(BaseModel):
@@ -16,33 +16,50 @@ class Coordinations(BaseModel):
     long: float
 
 
-class GrainType(enum.Enum):
-    locality = "locality"
-    region = "region"
-    country = "country"
-
-
 class Location(BaseModel):
     """resolved/computed location model"""
 
     name: str
-    grain: GrainType
+    domain: str = None
     coords: Coordinations = None
     timezone: str = None
     external: Dict = None
 
 
 class LocationList(BaseModel):
-    resolved: List[Location]
+    values: List[Location]
+
+
+class WitLocationType(enum.Enum):
+    """either value or resolved"""
+
+    UNRESOLVED = "value"
+    RESOLVED = "resolved"
 
 
 class WitLocation(BaseModel):
     """wit/location model"""
 
     confidence: float
-    value: str
-    resolved: LocationList
+    value: str = None
+    resolved: LocationList = None
     body: str = Field(..., description="Literal content from the original text")
+    type: WitLocationType
+
+    @root_validator
+    @classmethod
+    def root_validator(cls, values):
+        if (
+            values.get("type") == WitLocationType.RESOLVED.value
+            and values.get("resolved") is None
+        ):
+            raise ValueError("Resolved WitLocation type must have `resolved` attribute")
+        if (
+            values.get("type") == WitLocationType.UNRESOLVED.value
+            and values.get("value") is None
+        ):
+            raise ValueError("Value WitLocation type must have `value` attribute")
+        return values
 
 
 class Datetime(BaseModel):
@@ -55,8 +72,8 @@ class Datetime(BaseModel):
 class WitDatetimeType(enum.Enum):
     """WitDatetimeType enum value"""
 
-    value = "value"
-    interval = "interval"
+    VALUE = "value"
+    INTERVAL = "interval"
 
 
 class WitDatetime(BaseModel):
@@ -74,8 +91,8 @@ class WitDatetime(BaseModel):
 class IntentName(enum.Enum):
     """Intent name registered"""
 
-    begin = "getting_started"
-    query = "get_by_country"
+    BEGIN = "getting_started"
+    QUERY = "get_by_country"
 
 
 class Intent(BaseModel):
@@ -86,11 +103,11 @@ class Intent(BaseModel):
     confidence: float
 
 
-class Entities(enum.Enum):
+class Entities(BaseModel):
     """Entity type registered"""
 
-    location: List[WitLocation] = Field(..., alias="wit$location:location")
-    datetime: List[WitDatetime] = Field(..., alias="wit$datetime:datetime")
+    location: List[WitLocation] = Field(None, alias="wit$location:location")
+    datetime: List[WitDatetime] = Field(None, alias="wit$datetime:datetime")
 
 
 class TextMeaning(BaseModel):
