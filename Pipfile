@@ -8,6 +8,7 @@ pytest = "*"
 pytest-cov = "*"
 blue-chip = "*"
 atomicwrites = {version = "*",sys_platform = "== 'win32'"}
+coveralls = "*"
 
 [packages]
 fastapi = "*"
@@ -15,7 +16,6 @@ requests = "*"
 uvicorn = "*"
 gunicorn = "*"
 wit = "*"
-coveralls = "*"
 
 [requires]
 python_version = "3.8"
