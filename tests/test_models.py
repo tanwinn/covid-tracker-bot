@@ -49,6 +49,15 @@ class TestFacebook:
         with pytest.raises(ValidationError):
             facebook.Event(**test_data_invalid_event)
 
+    def test_valid_response_message(self, test_data_valid_response_message):
+        print(f"Test Data:\n{pf(test_data_valid_response_message)}")
+        facebook.Response(**test_data_valid_response_message)
+
+    def test_invalid_response_message(self, test_data_invalid_response_message):
+        print(f"Test Data:\n{pf(test_data_invalid_response_message)}")
+        with pytest.raises(ValidationError):
+            facebook.Response(**test_data_invalid_response_message)
+
 
 class TestWit:
     """Test Wit models"""

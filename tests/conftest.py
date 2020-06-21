@@ -84,6 +84,24 @@ def test_data_invalid_event(request):
     return request.param
 
 
+with open(str(FACEBOOK_TEST_DATA_PATH / "response_message_data.json")) as outfile:
+    RESPONSE_MESSAGE_DATA = json.load(outfile)
+    INVALID_RESPONSE_MESSAGE_DATA = RESPONSE_MESSAGE_DATA.get("invalid")
+    VALID_RESPONSE_MESSAGE_DATA = RESPONSE_MESSAGE_DATA.get("valid")
+
+
+@pytest.fixture(scope="session", params=VALID_RESPONSE_MESSAGE_DATA)
+def test_data_valid_response_message(request):
+    """Test data for valid ResponseMessage models"""
+    return request.param
+
+
+@pytest.fixture(scope="session", params=INVALID_RESPONSE_MESSAGE_DATA)
+def test_data_invalid_response_message(request):
+    """Test data for invalid ResponseMessage models"""
+    return request.param
+
+
 # Wit Test Data
 with open(str(WIT_TEST_DATA_PATH / "text_meaning_data.json")) as outfile:
     TEXT_MEANING_DATA = json.load(outfile)
