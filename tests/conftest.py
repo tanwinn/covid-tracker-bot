@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import pytest
+import requests
 from fastapi.testclient import TestClient
 
 from api import main
@@ -26,6 +27,15 @@ def test_data_path():
 def api_client():
     """FastAPI testing client"""
     return TestClient(main.app)
+
+
+@pytest.fixture()
+def mocked_200_response():
+    resp = requests.models.Response()
+    resp.status_code = 200
+    resp._content = b'{"msg": "this is the mocked content"}'
+    print(resp.json())
+    yield resp
 
 
 # Facebook Test data
