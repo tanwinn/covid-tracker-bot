@@ -16,9 +16,9 @@ from models import facebook
 APP_LOGGER = logging.getLogger(__name__)
 
 # Messenger API parameters
-FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN")
+FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
 # A user secret to verify webhook get request
-FB_VERIFY_TOKEN = os.environ.get("FB_VERIFY_TOKEN")
+FB_VERIFY_TOKEN = os.environ.get("FB_VERIFY_TOKEN", "default")
 
 ROOT = Path(__file__).joinpath("..").joinpath("..").resolve()
 PRIVACY_POLICY_PATH = ROOT / "resources" / "pp.html"

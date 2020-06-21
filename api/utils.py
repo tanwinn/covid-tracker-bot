@@ -14,9 +14,9 @@ from wit import Wit
 
 from models import facebook
 
-WIT_TOKEN = os.environ.get("WIT_TOKEN")
-FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN")
-FB_VERIFY_TOKEN = os.environ.get("FB_VERIFY_TOKEN")
+WIT_TOKEN = os.environ.get("WIT_TOKEN", "default")
+FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
+FB_VERIFY_TOKEN = os.environ.get("FB_VERIFY_TOKEN", "default")
 FB_GRAPH_API = "https://graph.facebook.com/me/messages?"
 
 # pylint: disable=logging-format-interpolation
