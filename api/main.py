@@ -63,6 +63,7 @@ def messenger_post(data: facebook.Event):
     """
     Handler for webhook (currently for postback and messages)
     """
+    APP_LOGGER.warning(f"Data event:\n {data}")
     for entry in data.entry:
         # get all the messages
         messages = entry.messaging
