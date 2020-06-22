@@ -34,7 +34,8 @@ def fb_message(sender_id, text):
     data = facebook.Response(
         recipient=facebook.User(id=sender_id),
         message=facebook.ResponseMessage(text=text),
-    ).json()
+    ).dict()
+    UTILS_LOGGER.warning(f"Prepping call to facebook with data={pf(data)}")
     resp = requests.post(f"{FB_GRAPH_API}access_token={FB_PAGE_TOKEN}", json=data)
     return resp.json()
 
