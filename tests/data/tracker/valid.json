@@ -1,0 +1,32 @@
+{
+    "location_data":
+        {
+            "location":{
+                "coordinates":{
+                    "latitude":"37.0902",
+                    "longitude":"-95.7129"
+                },
+                "country":"US",
+                "country_code":"US",
+                "country_population":327167434,
+                "county":"",
+                "id":225,
+                "last_updated":"2020-06-21T22:43:25.127860Z",
+                "latest":{
+                    "confirmed":2255119,
+                    "deaths":119719,
+                    "recovered":0
+                },
+                "province":"",
+                "timelines":{}
+            }
+        },
+    "latest_data":
+        {
+            "latest": {
+                "confirmed":2255119,
+                "deaths":119719,
+                "recovered":0
+            }
+        }
+}

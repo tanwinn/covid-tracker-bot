@@ -71,12 +71,15 @@ def messenger_post(data: facebook.Event):
             message = messages[0]
             APP_LOGGER.warning(f"Message object: \n{pf(message.message.dict())}")
             # Yay! We got a new message!
-            text = utils.handle_user_message(message)
+            texts = utils.handle_user_message(message)
             # We retrieve the Facebook user ID of the sender
             fb_id = message.sender.id
             # send message
-            fb_post_resp = utils.fb_message(fb_id, text)
-            APP_LOGGER.warning(f"FB response after POST:\n{pf(fb_post_resp)}")
+            for text in texts:
+                fb_post_resp = utils.fb_message(fb_id, text)
+                APP_LOGGER.warning(
+                    f"FB response after POSTing content=`{text}:\n{pf(fb_post_resp)}"
+                )
     return "dummy"
 
 

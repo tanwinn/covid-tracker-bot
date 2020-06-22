@@ -4,10 +4,12 @@ tests.conftest.py
 """
 
 import json
+import os
 from pathlib import Path
 
 import pytest
 import requests
+import responses
 from fastapi.testclient import TestClient
 
 from api import main, utils
@@ -16,6 +18,7 @@ ROOT = Path(__file__).joinpath("..").joinpath("..").resolve()
 TEST_DATA_PATH = ROOT / "tests" / "data"
 FACEBOOK_TEST_DATA_PATH = TEST_DATA_PATH / "facebook"
 WIT_TEST_DATA_PATH = TEST_DATA_PATH / "wit"
+TRACKER_TEST_DATA_PATH = TEST_DATA_PATH / "tracker"
 
 
 @pytest.fixture(scope="session")
@@ -35,15 +38,6 @@ def patch_wit_client(monkeypatch, mocker):
     monkeypatch.setattr(utils, "WIT_CLIENT", value=mocker.MagicMock(specs=["message"]))
     yield
     monkeypatch.undo()
-
-
-@pytest.fixture()
-def mocked_200_response():
-    resp = requests.models.Response()
-    resp.status_code = 200
-    resp._content = b'{"msg": "this is the mocked content"}'
-    print(resp.json())
-    yield resp
 
 
 # Facebook Test data
@@ -131,3 +125,28 @@ with open(str(WIT_TEST_DATA_PATH / "text_meaning_data.json")) as outfile:
 def test_data_valid_text_meaning(request):
     """Test data for valid TextMeaning models"""
     return request.param
+
+
+with open(str(TRACKER_TEST_DATA_PATH / "valid.json")) as outfile:
+    VALID_TEST_DATA = json.load(outfile)
+
+
+@pytest.fixture(scope="session")
+def test_data_valid_api_location():
+    """Test data for valid Location models"""
+    return VALID_TEST_DATA.get("location_data")
+
+
+@pytest.fixture(scope="session")
+def test_data_valid_api_latest():
+    """Test data for valid Latest models"""
+    return VALID_TEST_DATA.get("latest_data")
+
+
+@pytest.fixture(scope="session")
+def test_data_valid_api_location_with_timelines():
+    """Test data for valid Location w timelines models"""
+    with open(
+        str(TRACKER_TEST_DATA_PATH / "valid_location_w_timeline.json")
+    ) as outfile:
+        return json.load(outfile)

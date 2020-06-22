@@ -65,8 +65,8 @@ class WitLocation(BaseModel):
 class Datetime(BaseModel):
     """computed/resolved datetime model powered by duckling"""
 
-    value: str  # TODO: parse this into datetime type
-    grain: str
+    value: str = None  # TODO: parse this into datetime type
+    grain: str = None
 
 
 class WitDatetimeType(enum.Enum):
@@ -82,10 +82,8 @@ class WitDatetime(BaseModel):
     body: str = Field(..., description="Literal content from the original text")
     confidence: float
     values: List[Datetime] = None
-    value: str  # TODO: parse this into datetime type
+    value: str = None  # TODO: parse this into datetime type
     type: WitDatetimeType
-    to: Datetime = None
-    from_val: Datetime = Field(None, alias="from")
 
 
 class IntentName(enum.Enum):
