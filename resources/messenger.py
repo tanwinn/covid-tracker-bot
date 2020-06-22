@@ -39,11 +39,11 @@ FB_VERIFY_TOKEN = os.environ.get("FB_VERIFY_TOKEN")
 
 # Setup Bottle Server
 debug(True)
-app = Bottle()
+APP = Bottle()
 
 
 # Facebook Messenger GET Webhook
-@app.get("/webhook")
+@APP.get("/webhook")
 def messenger_webhook():
     """
     A webhook to return a challenge
@@ -59,7 +59,7 @@ def messenger_webhook():
 
 
 # Facebook Messenger POST Webhook
-@app.post("/webhook")
+@APP.post("/webhook")
 def messenger_post():
     """
     Handler for webhook (currently for postback and messages)
@@ -131,4 +131,4 @@ client = Wit(access_token=WIT_TOKEN)
 
 if __name__ == "__main__":
     # Run Server
-    app.run(host="0.0.0.0", port=argv[1])
+    APP.run(host="0.0.0.0", port=argv[1])

@@ -10,7 +10,7 @@ import pytest
 import requests
 from fastapi.testclient import TestClient
 
-from api import main
+from api import main, utils
 
 ROOT = Path(__file__).joinpath("..").joinpath("..").resolve()
 TEST_DATA_PATH = ROOT / "tests" / "data"
@@ -26,7 +26,15 @@ def test_data_path():
 @pytest.fixture(scope="session")
 def api_client():
     """FastAPI testing client"""
-    return TestClient(main.app)
+    return TestClient(main.APP)
+
+
+@pytest.fixture
+def patch_wit_client(monkeypatch, mocker):
+    """Mocked wit client"""
+    monkeypatch.setattr(utils, "WIT_CLIENT", value=mocker.MagicMock(specs=["message"]))
+    yield
+    monkeypatch.undo()
 
 
 @pytest.fixture()

@@ -46,7 +46,7 @@ prospector # linting TODO: fix bc config linting
 
 ## Run the App
 ```bash
-uvicorn api.main:app --reload  # Run the app
+uvicorn api.main:APP --reload  # Run the APP
 ```
 
 ## Additional Resources

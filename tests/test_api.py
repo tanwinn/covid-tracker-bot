@@ -4,9 +4,10 @@ tests.test_api.py
 Test api calls
 """
 
-import pytest
 import json
 from pprint import pformat as pf
+
+import pytest
 
 import api
 
@@ -51,7 +52,8 @@ def test_get_privacy_policy(api_client):
     assert api_client.get("/privacy-policy").status_code == 200
 
 
-def test_post_message_200_resp_valid_data(api_client, test_data_valid_event):
+def test_post_message_200_resp_valid_data(api_client, test_data_valid_event, mocker):
+    mocker.patch("api.utils.handle_user_message", return_value="mocked response")
     resp = api_client.post(f"/webhook", data=json.dumps(test_data_valid_event))
     print(f"Response: \n{pf(resp.json())}")
     assert resp.status_code == 200
