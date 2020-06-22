@@ -414,6 +414,66 @@
                     }
                 ]
             }
+        },
+        {
+            "entities":{
+                "wit$datetime:datetime":[
+                    {
+                        "body":"last weekend",
+                        "confidence":0.9654,
+                        "end":12,
+                        "entities":[
+        
+                        ],
+                        "from":{
+                            "grain":"hour",
+                            "value":"2020-06-12T18:00:00.000-07:00"
+                        },
+                        "id":"e88da181-897a-4f5d-ae61-e4413fca38d6",
+                        "name":"wit$datetime",
+                        "role":"datetime",
+                        "start":0,
+                        "to":{
+                            "grain":"hour",
+                            "value":"2020-06-15T00:00:00.000-07:00"
+                        },
+                        "type":"interval",
+                        "values":[
+                            {
+                                "from":{
+                                    "grain":"hour",
+                                    "value":"2020-06-12T18:00:00.000-07:00"
+                                },
+                                "to":{
+                                    "grain":"hour",
+                                    "value":"2020-06-15T00:00:00.000-07:00"
+                                },
+                                "type":"interval"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "intents":[
+        
+            ],
+            "text":"last weekend",
+            "traits":{
+                "wit$on_off":[
+                    {
+                        "confidence":0.7614,
+                        "id":"535a80f0-6922-4680-b678-0576f248cdcc",
+                        "value":"off"
+                    }
+                ],
+                "wit$sentiment":[
+                    {
+                        "confidence":0.7765,
+                        "id":"5ac2b50a-44e4-466e-9d49-bad6bd40092c",
+                        "value":"positive"
+                    }
+                ]
+            }
         }
     ],
     

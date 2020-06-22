@@ -7,6 +7,6 @@ install:
 script:
   - pipenv run bc fmt
   - pipenv run prospector
-  - pipenv run pytest
+  - pipenv run pytest -m"not integration"
 after_success:
   - coveralls

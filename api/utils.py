@@ -8,11 +8,12 @@ Utilities used by api.
 import logging
 import os
 from pprint import pformat as pf
+from typing import List
 
 import requests
 from wit import Wit
 
-from models import facebook
+from models import facebook, wit
 
 WIT_TOKEN = os.environ.get("WIT_TOKEN", "default")
 FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
@@ -38,7 +39,7 @@ def fb_message(sender_id, text):
     return resp.json()
 
 
-def handle_user_message(fb_message_object):
+def handle_user_message(fb_message_object) -> List[str]:
     """
     Interpret user_msg's intent & entities using Wit
     """
@@ -48,6 +49,11 @@ def handle_user_message(fb_message_object):
     # and customize our response to the message in handle_message
     response = WIT_CLIENT.message(msg=text)
     UTILS_LOGGER.warning(f"WIT response:\n{pf(response)}")
-    # Checks if user's message is a greeting
-    # Otherwise we will just repeat what they sent us
-    return "We've received your message: " + response["text"]
+    # if response.get("entities")
+    meaning = wit.TextMeaning.parse_obj(response)
+    # countries
+    # one day specifically
+    return [
+        f"We've received your message: {response['text']}",
+        f"Intents: {meaning.intents[0].name if meaning.intents else ''}",
+    ]

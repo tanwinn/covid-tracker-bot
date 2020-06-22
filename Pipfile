@@ -10,6 +10,7 @@ blue-chip = "*"
 atomicwrites = {version = "*",sys_platform = "== 'win32'"}
 coveralls = "*"
 pytest-mock = "*"
+responses = "*"
 
 [packages]
 fastapi = "*"
