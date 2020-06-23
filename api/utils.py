@@ -133,7 +133,7 @@ def handle_query_intent(meaning: wit.TextMeaning) -> List[str]:
         reply.append(f"Time: {time_arg}")
 
     if locations_arg != "":
-        reply.append(f"Location(s):{locations_arg[:-1]}")
+        reply.append(f"Location(s):{locations_arg}")
 
     LOGGER.warning(
         f"Handling query for countries {resolved_countries} & time {time_arg}..."

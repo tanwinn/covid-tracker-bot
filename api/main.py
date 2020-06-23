@@ -96,3 +96,13 @@ def script(file_name: str = None):
 @APP.post("/get-wit")
 def get_wit_method(countries: wit.ScriptInput):
     return get_wit.get_wit(countries.countries)
+
+
+@APP.get("/map-unwit-wit")
+def map_datasset(unwit_to_cc_name: str, unwit_to_wit_name: str):
+    return data.map_wit_unwit_to_cc(unwit_to_wit_name, unwit_to_cc_name)
+
+
+@APP.get("/merge_dataset")
+def merge_dataset(unwit: str, wit: str):
+    return data.merge_wit_unwit(unwit, wit)
