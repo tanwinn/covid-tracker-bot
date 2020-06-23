@@ -21,6 +21,7 @@ from models import facebook, wit
 WIT_TOKEN = os.environ.get("WIT_TOKEN", "default")
 FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
 FB_GRAPH_API = "https://graph.facebook.com/me/messages?"
+GETTING_STARTED_SCRIPT = "placeholder for getting started"
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,25 +45,26 @@ def fb_message(sender_id, text):
 def handle_location(meaning: wit.TextMeaning) -> (str, List[str]):
     """Extract locations info from wit"""
     locations = meaning.entities.location
-    locations_arg = ""
+    locations_arg = []
     resolved_countries = []
     if locations:
-        print("We have location entities")
+        LOGGER.warning("We have location entities")
         for location in locations:
-            (print(f"processing location: {location.body}: type: {location.type}"))
-            print(f"current arg: {pf(locations_arg)}")
+            LOGGER.debug(f"processing location: {location.body}: type: {location.type}")
+            LOGGER.debug(f"current arg: {pf(locations_arg)}")
             if location.type == wit.WitLocationType.UNRESOLVED:
-                locations_arg += f" unresolved location {location.value},"
+                locations_arg.append(f"unresolved location {location.value}")
+                resolved_countries.append(location.value)
             else:
                 resolved_values = location.resolved.values
-                print(f"resolving values")
+                LOGGER.debug(f"resolving values")
                 for v in resolved_values:
-                    print(f"\t{v.name}: {v.domain}")
+                    LOGGER.debug(f"\t{v.name}: {v.domain}")
                     if v.domain == "country":
-                        locations_arg += f" resolved country {v.name},"
+                        locations_arg.append(f"resolved country {v.name}")
                         resolved_countries.append(v.name)
                         break
-    return locations_arg, resolved_countries
+    return ", ".join(locations_arg), resolved_countries
 
 
 def handle_time(meaning: wit.TextMeaning) -> str:
@@ -72,7 +74,7 @@ def handle_time(meaning: wit.TextMeaning) -> str:
     time_arg = None
     if times:
         time_arg = times[0]
-        print(f"len(times): {len(times)}")
+        LOGGER.warning(f"len(times): {len(times)}")
         if len(times) > 1 or time_arg.type == wit.WitDatetimeType.INTERVAL:
             return "invalid"
         time_arg = time_arg.value
@@ -83,10 +85,14 @@ def handle_query(countries: List[str], time: str = None):
     text = []
     LOGGER.warning(f"Countries = {countries}")
     for country_name in countries:
-        LOGGER.warning(f"Getting info for {country_name}:")
         country_code = data.country_code(country_name)
         LOGGER.warning(f"Getting info for {country_name}: {country_code}")
-        if country_code:
+        if not country_code:
+            text.append(
+                f"JHU doesn't support {country_name} :( Make sure it is a country."
+            )
+            continue
+        try:
             result, valid_time = tracker.get_by_country_code(country_code, time)
             LOGGER.warning(f"Result: {result}")
             if not valid_time:
@@ -94,42 +100,60 @@ def handle_query(countries: List[str], time: str = None):
                     f"JHU doesn't have that time info for {country_name}. I'll give you the latest time."
                 )
             text.append(f"COVID situation in {country_name}: {result}")
-    return "\n".join(text)
+        except (requests.HTTPError):
+            text.append(
+                f"JHU doesn't support {country_name} with country code {country_code} :("
+            )
+        except requests.ConnectionError:
+            # TODO: add handover protocol
+            text.append(f"API is currently down. Can't get the info.")
+    return text
+
+
+def handle_oos_intent(meaning: wit.TextMeaning):  # pylint: disable=unused-argument
+    reply = []
+    reply.append(GETTING_STARTED_SCRIPT)
+    return reply
+
+
+def handle_query_intent(meaning: wit.TextMeaning) -> List[str]:
+    reply = []
+    time_arg = handle_time(meaning)
+    locations_arg, resolved_countries = handle_location(meaning)
+    if time_arg == "invalid":
+        reply.append(
+            f"I can only provide COVID cases on a certain date. I'll give you the latest info."
+        )
+        time_arg = None
+    elif time_arg:
+        reply.append(f"Time: {time_arg}")
+
+    if locations_arg != "":
+        reply.append(f"Location(s):{locations_arg[:-1]}")
+
+    LOGGER.warning(
+        f"Handling query for countries {resolved_countries} & time {time_arg}..."
+    )
+    reply.extend(handle_query(resolved_countries, time_arg))
+    return reply
 
 
 # pylint: disable=too-many-nested-blocks
 def handle_user_message(fb_message_object) -> List[str]:
     """Interpret user_msg's intent & entities using Wit"""
 
-    text = fb_message_object.message.text
-    reply = [f"We've received your message: {text}"]
     try:
+        text = fb_message_object.message.text
+        reply = [f"We've received your message: {text}"]
         response = WIT_CLIENT.message(msg=text)
-        LOGGER.warning(f"WIT response:\n{pf(response)}")
+        LOGGER.debug(f"WIT response:\n{pf(response)}")
         meaning = wit.TextMeaning.parse_obj(response)
-        reply.append(
-            f"Intents: {meaning.intents[0].name if meaning.intents else 'out of scope'}"
-        )
-        time_arg = handle_time(meaning)
-        locations_arg, resolved_countries = handle_location(meaning)
-        if time_arg == "invalid":
-            reply.append(
-                f"I can only provide COVID cases on a certain date. I'll give you the latest info."
-            )
-            time_arg = None
-        elif time_arg:
-            reply.append(f"Time: {time_arg}")
-
-        if locations_arg != "":
-            reply.append(f"Location(s):{locations_arg[:-1]}")
-
-        LOGGER.warning(
-            f"Handling query for countries {resolved_countries} & time {time_arg}..."
-        )
-        query_result = handle_query(resolved_countries, time_arg)
-        if query_result != "":
-            reply.append(query_result)
-
+        intent = meaning.intents[0].name if meaning.intents else "oos"
+        reply.append(f"Intents: {intent}")
+        if intent == "oos":
+            reply.extend(handle_oos_intent(meaning))
+        else:
+            reply.extend(handle_query_intent(meaning))
     except Exception as err:
         LOGGER.error(f"Dismissed ERROR:\n{pf(err)}")
-    return reply
+    return "\n".join(reply)

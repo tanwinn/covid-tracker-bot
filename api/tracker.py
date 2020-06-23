@@ -82,7 +82,7 @@ def get_by_time(location_data, time: str) -> tracker.Report:
         return tracker.Report(
             confirmed=data.confirmed.timeline.get(datetime),
             deaths=data.deaths.timeline.get(datetime),
-            recovered=data.recovered.timeline.get(datetime, 0),
+            # recovered=data.recovered.timeline.get(datetime, 0),
         )
     except ValidationError:
         return None

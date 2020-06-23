@@ -114,3 +114,7 @@ class TextMeaning(BaseModel):
     text: str
     entities: Entities
     intents: List[Intent]
+
+
+class ScriptInput(BaseModel):
+    countries: List[str] = Field(None, example=["Vietnam", "Laos"])

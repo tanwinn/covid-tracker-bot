@@ -4,13 +4,15 @@ api.main.py
 import logging
 import os
 from pprint import pformat as pf
+from typing import List
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 
 import data
 from api import utils
-from models import facebook
+from models import facebook, wit
+from scripts import get_wit
 
 # pylint: disable=logging-format-interpolation
 LOGGER = logging.getLogger(__name__)
@@ -56,29 +58,25 @@ def messenger_webhook(request: Request):
 
 
 @APP.post("/webhook")
-def messenger_post(data: facebook.Event):
+def messenger_post(data: facebook.Event) -> List[str]:
     """
     Handler for webhook (currently for postback and messages)
     """
     LOGGER.warning(f"Data event:\n {pf(data.dict())}")
     for entry in data.entry:
-        # get all the messages
         messages = entry.messaging
         if messages[0]:
-            # Get the first message
             message = messages[0]
             LOGGER.warning(f"Message object: \n{pf(message.message.dict())}")
-            # Yay! We got a new message!
-            texts = utils.handle_user_message(message)
+            text = utils.handle_user_message(message)
             # We retrieve the Facebook user ID of the sender
             fb_id = message.sender.id
             # send message
-            for text in texts:
-                fb_post_resp = utils.fb_message(fb_id, text)
-                LOGGER.warning(
-                    f"FB response after POSTing content=`{text}:\n{pf(fb_post_resp)}"
-                )
-    return texts
+            fb_post_resp = utils.fb_message(fb_id, text)
+            LOGGER.warning(
+                f"FB response after POSTing content=`{text}:\n{pf(fb_post_resp)}"
+            )
+    return text
 
 
 @APP.get("/privacy-policy", response_class=HTMLResponse)
@@ -86,3 +84,15 @@ def get_privacy_policy():
     with open(PRIVACY_POLICY_PATH) as rfile:
         return rfile.read()
     return None
+
+
+@APP.get("/_execute_scripts")
+def script(file_name: str = None):
+    if file_name:
+        return data.merge_two_columns_into_dict(file_name)
+    return data.merge_two_columns_into_dict()
+
+
+@APP.post("/get-wit")
+def get_wit_method(countries: wit.ScriptInput):
+    return get_wit.get_wit(countries.countries)

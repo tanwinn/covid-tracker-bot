@@ -13,7 +13,7 @@ class Report(BaseModel):
 
     confirmed: int
     deaths: int
-    recovered: int
+    # recovered: int
 
 
 class Latest(BaseModel):
