@@ -57,13 +57,17 @@ def handle_location(meaning: wit.TextMeaning) -> (str, List[str]):
                 resolved_countries.append(location.value)
             else:
                 resolved_values = location.resolved.values
+                resolved_country = None
                 LOGGER.debug(f"resolving values")
                 for v in resolved_values:
-                    LOGGER.debug(f"\t{v.name}: {v.domain}")
+                    LOGGER.warning(f"\t{v.name}: {v.domain}")
                     if v.domain == "country":
                         locations_arg.append(f"resolved country {v.name}")
-                        resolved_countries.append(v.name)
+                        resolved_country = v.name
                         break
+                resolved_countries.append(
+                    resolved_country if resolved_country else resolved_values[0].name
+                )
     return ", ".join(locations_arg), resolved_countries
 
 
