@@ -81,13 +81,18 @@ def handle_time(meaning: wit.TextMeaning) -> str:
 
 def handle_query(countries: List[str], time: str = None):
     text = []
-    LOGGER.warning(f"Countries={countries}")
+    LOGGER.warning(f"Countries = {countries}")
     for country_name in countries:
+        LOGGER.warning(f"Getting info for {country_name}:")
         country_code = data.country_code(country_name)
         LOGGER.warning(f"Getting info for {country_name}: {country_code}")
         if country_code:
-            result = tracker.get_by_country_code(country_code, time)
+            result, valid_time = tracker.get_by_country_code(country_code, time)
             LOGGER.warning(f"Result: {result}")
+            if not valid_time:
+                text.append(
+                    f"JHU doesn't have that time info for {country_name}. I'll give you the latest time."
+                )
             text.append(f"COVID situation in {country_name}: {result}")
     return "\n".join(text)
 
@@ -125,6 +130,6 @@ def handle_user_message(fb_message_object) -> List[str]:
         if query_result != "":
             reply.append(query_result)
 
-    except Exception:
-        pass
+    except Exception as err:
+        LOGGER.error(f"Dismissed ERROR:\n{pf(err)}")
     return reply

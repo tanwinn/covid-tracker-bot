@@ -44,6 +44,7 @@ def get_world_latest() -> tracker.Report:
 
 
 def get_by_country(country_id: int, time: str = None) -> tracker.Report:
+    """bool: means if the time requested succeeded"""
     timelines = time is not None
     location_object = dict(
         _call(f"/locations/{country_id}", timelines=timelines).json()
@@ -55,15 +56,21 @@ def get_by_country(country_id: int, time: str = None) -> tracker.Report:
     return get_by_time(tracker.Location.parse_obj(location_object), time)
 
 
-def get_by_country_code(country_code: str, time: str = None) -> tracker.Report:
+def get_by_country_code(country_code: str, time: str = None) -> (tracker.Report, bool):
+    """bool: means if the time requested succeeded"""
     timelines = time is not None
     locations_object = tracker.LocationsReport.parse_obj(
         _call(f"/locations", country_code=country_code, timelines=timelines).json()
     )
     LOGGER.warning(f"Locations object:\n{pf(locations_object)}")
-    if not timelines:
-        return locations_object.latest
-    return get_by_time(locations_object.locations.pop(), time)
+    result = None
+    valid_time = True
+    if timelines:
+        result = get_by_time(locations_object.locations.pop(), time)
+        valid_time = result is not None
+        LOGGER.warning(f"timed result: {result}")
+    LOGGER.warning(f"latest result: {locations_object.latest}")
+    return (result if result else locations_object.latest), valid_time
 
 
 def get_by_time(location_data, time: str) -> tracker.Report:
