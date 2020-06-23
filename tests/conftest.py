@@ -150,3 +150,18 @@ def test_data_valid_api_location_with_timelines():
         str(TRACKER_TEST_DATA_PATH / "valid_location_w_timeline.json")
     ) as outfile:
         return json.load(outfile)
+
+
+@pytest.fixture(scope="session")
+def test_data_valid_api_locations_timeline():
+    """Test data for valid Location w timelines models"""
+    with open(str(TRACKER_TEST_DATA_PATH / "valid_locations_report.json")) as outfile:
+        return json.load(outfile)
+
+
+@pytest.fixture(scope="session")
+def test_data_valid_api_locations(test_data_valid_api_locations_timeline):
+    """Test data for valid Location without timelines models"""
+    data = test_data_valid_api_locations_timeline
+    data["timelines"] = {}
+    return data

@@ -3,8 +3,6 @@ api.tracker.py
 ~~~~~~~~~~~~~~~
 external service call
 """
-import datetime as dt
-
 # pylint: disable=logging-format-interpolation
 import json
 import logging
@@ -25,7 +23,7 @@ def _call(path, raise_err=True, **kwargs):
     url = f"{TRACKER_API}{path}"
     LOGGER.warning(f"Prepping calls to GET {url}...")
     resp = requests.get(url, params=kwargs)
-    LOGGER.warning(f"Response {resp.status_code}:")
+    # LOGGER.warning(f"Response {resp.status_code}:")
     try:
         LOGGER.warning(f"\t{pf(resp.json())}")
     except json.decoder.JSONDecodeError:
@@ -57,17 +55,27 @@ def get_by_country(country_id: int, time: str = None) -> tracker.Report:
     return get_by_time(tracker.Location.parse_obj(location_object), time)
 
 
+def get_by_country_code(country_code: str, time: str = None) -> tracker.Report:
+    timelines = time is not None
+    locations_object = tracker.LocationsReport.parse_obj(
+        _call(f"/locations", country_code=country_code, timelines=timelines).json()
+    )
+    LOGGER.warning(f"Locations object:\n{pf(locations_object)}")
+    if not timelines:
+        return locations_object.latest
+    return get_by_time(locations_object.locations.pop(), time)
+
+
 def get_by_time(location_data, time: str) -> tracker.Report:
     """Currently support one date specifically only"""
-    datetime = (
-        dt.datetime.strptime(time[:10], "%Y-%M-%d").date().isoformat() + "T00:00:00Z"
-    )
+    datetime = time[:10] + "T00:00:00Z"
+    LOGGER.warning(f"Getting cases on date: {datetime}")
     data = location_data.timelines
     try:
         return tracker.Report(
             confirmed=data.confirmed.timeline.get(datetime),
             deaths=data.deaths.timeline.get(datetime),
-            recovered=data.recovered.timeline.get(datetime),
+            recovered=data.recovered.timeline.get(datetime, 0),
         )
     except ValidationError:
         return None
