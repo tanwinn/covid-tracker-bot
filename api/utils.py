@@ -112,8 +112,8 @@ def handle_query(countries: List[str], time: str = None):
                 time = None
             text.append(
                 f"By {time[:10] if time else tracker.last_updated()}, "
-                f"{country_name} has {result.confirmed} confirmed cases"
-                f" and {result.deaths} death cases."
+                f"{country_name} has {format(result.confirmed, ',d')} confirmed cases"
+                f" and {format(result.deaths, ',d')} death cases."
             )
         except (requests.HTTPError):
             text.append(
