@@ -81,7 +81,7 @@ def messenger_post(data: facebook.Event):
                 APP_LOGGER.warning(
                     f"FB response after POSTing content=`{text}:\n{pf(fb_post_resp)}"
                 )
-    return "dummy"
+    return texts
 
 
 @APP.get("/privacy-policy", response_class=HTMLResponse)
