@@ -21,7 +21,12 @@ from models import facebook, wit
 WIT_TOKEN = os.environ.get("WIT_TOKEN", "default")
 FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
 FB_GRAPH_API = "https://graph.facebook.com/me/messages?"
-GETTING_STARTED_SCRIPT = "placeholder for getting started"
+GETTING_STARTED_SCRIPT = (
+    "Hi there, welcome to COVID-19 Tracker Chatbot! "
+    "We are here to provide you on number of COVID-19 infected, and death cases in countries worldwide. "
+    "Recovered case information is not supported by our current source - John Hopkins University (JHU)."
+)
+INSTRUCTIONS_SCRIPT = "Please enter the country and corresponding time period you want to learn about (ie. United States last month)."
 
 LOGGER = logging.getLogger(__name__)
 
@@ -87,13 +92,14 @@ def handle_time(meaning: wit.TextMeaning) -> str:
 
 def handle_query(countries: List[str], time: str = None):
     text = []
+    source = "JHU"
     LOGGER.warning(f"Countries = {countries}")
     for country_name in countries:
         country_code = data.country_code(country_name)
         LOGGER.warning(f"Getting info for {country_name}: {country_code}")
         if not country_code:
             text.append(
-                f"JHU doesn't support {country_name} :( Make sure it is a country."
+                f"{source} doesn't support {country_name} :( Please enter a valid country name and/or time period. Thank you! "
             )
             continue
         try:
@@ -101,12 +107,17 @@ def handle_query(countries: List[str], time: str = None):
             LOGGER.warning(f"Result: {result}")
             if not valid_time:
                 text.append(
-                    f"JHU doesn't have that time info for {country_name}. I'll give you the latest time."
+                    f"{source} doesn't have info for {country_name} in {time[:10]}. I'll give you the latest info."
                 )
-            text.append(f"COVID situation in {country_name}: {result}")
+                time = None
+            text.append(
+                f"By {time[:10] if time else tracker.last_updated()}, "
+                f"{country_name} has {result.confirmed} confirmed cases"
+                f" and {result.deaths} death cases."
+            )
         except (requests.HTTPError):
             text.append(
-                f"JHU doesn't support {country_name} with country code {country_code} :("
+                f"{source} doesn't support {country_name} with country code {country_code} :("
             )
         except requests.ConnectionError:
             # TODO: add handover protocol
@@ -115,8 +126,7 @@ def handle_query(countries: List[str], time: str = None):
 
 
 def handle_oos_intent(meaning: wit.TextMeaning):  # pylint: disable=unused-argument
-    reply = []
-    reply.append(GETTING_STARTED_SCRIPT)
+    reply = ["I don't understand ", INSTRUCTIONS_SCRIPT]
     return reply
 
 
