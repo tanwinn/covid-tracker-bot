@@ -11,7 +11,6 @@ atomicwrites = {version = "*",sys_platform = "== 'win32'"}
 coveralls = "*"
 pytest-mock = "*"
 responses = "*"
-pandas = "*"
 
 [packages]
 fastapi = "*"
@@ -19,6 +18,7 @@ requests = "*"
 uvicorn = "*"
 gunicorn = "*"
 wit = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.8"
