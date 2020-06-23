@@ -94,6 +94,10 @@ def handle_query(countries: List[str], time: str = None):
     text = []
     source = "JHU"
     LOGGER.warning(f"Countries = {countries}")
+    if not countries:
+        text.append(
+            f"I couldn't detect the coutry you provide. Please make sure the spelling is correct."
+        )
     for country_name in countries:
         country_code = data.country_code(country_name)
         LOGGER.warning(f"Getting info for {country_name}: {country_code}")
