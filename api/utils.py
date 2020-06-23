@@ -39,6 +39,7 @@ def fb_message(sender_id, text):
     resp = requests.post(f"{FB_GRAPH_API}access_token={FB_PAGE_TOKEN}", json=data)
     return resp.json()
 
+
 # pylint: disable=too-many-nested-blocks
 def handle_user_message(fb_message_object) -> List[str]:
     """
@@ -48,10 +49,10 @@ def handle_user_message(fb_message_object) -> List[str]:
     text = fb_message_object.message.text
     # Let's forward the message to Wit /message
     # and customize our response to the message in handle_message
-    response = WIT_CLIENT.message(msg=text)
-    LOGGER.warning(f"WIT response:\n{pf(response)}")
-    reply = [f"We've received your message: {response['text']}"]
+    reply = [f"We've received your message: {text}"]
     try:
+        response = WIT_CLIENT.message(msg=text)
+        LOGGER.warning(f"WIT response:\n{pf(response)}")
         # if response.get("entities")
         meaning = wit.TextMeaning.parse_obj(response)
         reply.append(
