@@ -1,13 +1,17 @@
 [![Coverage Status](https://coveralls.io/repos/github/tanwinn/covid-tracker-bot/badge.svg?branch=thanh)](https://coveralls.io/github/tanwinn/covid-tracker-bot?branch=thanh)
 
 # Covid Tracker Chatbot
-Testdrive Chatbot powered by [wit.ai](https://github.com/wit-ai/pywit) and Facebook Messenger for Covid tracker ([deployed API](https://covid-tracker-us.herokuapp.com/))
+Messenger Chatbot powered by [wit.ai](https://github.com/wit-ai/pywit) and Facebook Messenger for Covid tracker ([deployed API](https://covid-tracker-us.herokuapp.com/))
+
+Facebook Messenger Chatbot (InDev): m.me/103793244724793
+
+Wit.AI ID: 271193027527308
 
 Deployed: https://covid-tracker-chatbot.herokuapp.com/
 
 GitHub: https://github.com/tanwinn/covid-tracker-bot
 
-Submission for [Facebook Messaging Hackathon](https://fbmessaging2.devpost.com/?ref_content=default&ref_feature=challenge&ref_medium=portfolio) & [AI hackathon](https://fbai2.devpost.com/?ref_content=default&ref_feature=challenge&ref_medium=portfolio)
+Submission for [Wit AI hackathon](https://fbai2.devpost.com/?ref_content=default&ref_feature=challenge&ref_medium=portfolio)
 
 ## Dev setup
 
@@ -30,6 +34,7 @@ exit # exit out of the venv
 Create a .env file in project root to store the following info
 __.env file__
 ```bash
+TRACKER_API=https://covid-tracker-api-chatbot.herokuapp.com/v2
 WIT_TOKEN=your_wit_token  # Wit.ai parameters
 FB_PAGE_TOKEN=your_page_token  # Messenger API parameters
 FB_VERIFY_TOKEN=your_verify_token  # A user secret to verify webhook get request

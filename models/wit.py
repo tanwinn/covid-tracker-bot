@@ -108,9 +108,27 @@ class Entities(BaseModel):
     datetime: List[WitDatetime] = Field(None, alias="wit$datetime:datetime")
 
 
+class WitGreeting(BaseModel):
+    """Greeting model"""
+
+    value: bool
+    confidence: float
+
+
+class Traits(BaseModel):
+    """Traits model"""
+
+    greetings: List[WitGreeting] = Field(None, alias="wit$greetings")
+
+
 class TextMeaning(BaseModel):
     """GET /message response from Wit"""
 
     text: str
     entities: Entities
     intents: List[Intent]
+    traits: Traits = {}
+
+
+class ScriptInput(BaseModel):
+    countries: List[str] = Field(None, example=["Vietnam", "Laos"])

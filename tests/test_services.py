@@ -47,11 +47,9 @@ class TestIntegration:
     @pytest.mark.integration
     def test_timed_by_country_code(self, time, expected):
         country_code = "JP"
-        result = tracker.get_by_country_code(country_code, time=time)
-        if expected:
-            assert result.confirmed > 0
-        else:
-            assert result is None
+        result, valid_time = tracker.get_by_country_code(country_code, time=time)
+        assert result.confirmed > 0
+        assert valid_time is expected
         print(pf(f"Response:\n{result}"))
 
 
