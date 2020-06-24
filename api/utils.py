@@ -23,13 +23,14 @@ FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
 FB_GRAPH_API = "https://graph.facebook.com/me/messages?"
 GREETING = "Hi there, welcome to COVID-19 Tracker Chatbot!"
 GETTING_STARTED_SCRIPT = (
-    " am here to provide you on number of COVID-19 infected, and death cases in countries worldwide. "
+    " here to provide you on number of COVID-19 infected, and death cases in countries worldwide. "
     "Recovered case information is not supported by my current source - John Hopkins University (JHU)."
 )
 INSTRUCTIONS_SCRIPT = (
     "Please enter the country and corresponding time period you want to learn about "
-    "(ie. Give me COVID case of United States last month). If you need more information, reply with Hello."
+    "(ie. Give me COVID case of United States last month)."
 )
+EXTRA_SCRIPT = "If you need more information, reply with Hello."
 
 LOGGER = logging.getLogger(__name__)
 
@@ -134,20 +135,20 @@ def handle_query(countries: List[str], time: str = None):
 
 def handle_started_intent(meaning: wit.TextMeaning) -> List[str]:
     reply = []
-    pronoun = "COVID-19 Tracker Chatbot"
+    pronoun = "COVID-19 Tracker Chatbot is"
     if (
         meaning.traits
         and meaning.traits.greetings
         and meaning.traits.greetings[0].value
     ):
-        pronoun = "We"
+        pronoun = "I am"
         reply.append(GREETING)
     reply.extend([f"{pronoun}{GETTING_STARTED_SCRIPT}", INSTRUCTIONS_SCRIPT])
     return reply
 
 
 def handle_oos_intent() -> List[str]:
-    return ["I don't understand your message.", INSTRUCTIONS_SCRIPT]
+    return ["I don't understand your message.", INSTRUCTIONS_SCRIPT + " " + EXTRA_SCRIPT]
 
 
 def handle_query_intent(meaning: wit.TextMeaning) -> List[str]:
