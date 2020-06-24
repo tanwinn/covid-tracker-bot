@@ -61,9 +61,7 @@ def get_by_country(country_id: int, time: str = None) -> tracker.Report:
 def update_last_updated(location: tracker.Location):
     """Make sure the latest_update time is correct"""
     last_update = location.last_updated[:10]
-    glob = GLOBAL.get("last_update")
-    if not glob or glob < last_update:
-        GLOBAL.update({"last_update": last_update})
+    GLOBAL.update({"last_update": last_update})
 
 
 def last_updated() -> str:

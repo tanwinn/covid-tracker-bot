@@ -28,7 +28,7 @@ GETTING_STARTED_SCRIPT = (
 )
 INSTRUCTIONS_SCRIPT = (
     "Please enter the country and corresponding time period you want to learn about "
-    "(ie. Give me case of United States last month). If you need more instructions, reply with Get started."
+    "(ie. Give me case of United States last month). If you need more information, reply with Hello."
 )
 
 LOGGER = logging.getLogger(__name__)
