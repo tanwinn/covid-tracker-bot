@@ -26,7 +26,10 @@ GETTING_STARTED_SCRIPT = (
     "We are here to provide you on number of COVID-19 infected, and death cases in countries worldwide. "
     "Recovered case information is not supported by our current source - John Hopkins University (JHU)."
 )
-INSTRUCTIONS_SCRIPT = "Please enter the country and corresponding time period you want to learn about (ie. United States last month)."
+INSTRUCTIONS_SCRIPT = (
+    "Please enter the country and corresponding time period you want to learn about "
+    "(ie. Give me case of United States last month). If you need more instructions, reply with Get started."
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -129,8 +132,15 @@ def handle_query(countries: List[str], time: str = None):
     return text
 
 
-def handle_oos_intent(meaning: wit.TextMeaning):  # pylint: disable=unused-argument
-    reply = ["I don't understand ", INSTRUCTIONS_SCRIPT]
+def handle_other_intent(meaning: wit.TextMeaning):  # pylint: disable=unused-argument
+    reply = []
+    if (
+        meaning.traits
+        and meaning.traits.greetings
+        and meaning.traits.greetings[0].value
+    ):
+        reply.append(GETTING_STARTED_SCRIPT)
+    reply.append(INSTRUCTIONS_SCRIPT)
     return reply
 
 
@@ -164,14 +174,14 @@ def handle_user_message(fb_message_object) -> List[str]:
         text = fb_message_object.message.text
         reply = [f"We've received your message: {text}"]
         response = WIT_CLIENT.message(msg=text)
-        LOGGER.debug(f"WIT response:\n{pf(response)}")
+        LOGGER.warning(f"WIT response:\n{pf(response)}")
         meaning = wit.TextMeaning.parse_obj(response)
         intent = meaning.intents[0].name if meaning.intents else "oos"
         reply.append(f"Intents: {intent}")
-        if intent == "oos":
-            reply.extend(handle_oos_intent(meaning))
-        else:
+        if intent == wit.IntentName.QUERY:
             reply.extend(handle_query_intent(meaning))
+        else:
+            reply.extend(handle_other_intent(meaning))
     except Exception as err:
         LOGGER.error(f"Dismissed ERROR:\n{pf(err)}")
     return "\n".join(reply)
