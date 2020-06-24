@@ -21,6 +21,10 @@ LOGGER = logging.getLogger(__name__)
 GLOBAL = {}
 
 
+class NotFoundError(Exception):
+    """NotFound Exception"""
+
+
 def _call(path, raise_err=True, **kwargs):
     url = f"{TRACKER_API}{path}"
     LOGGER.warning(f"Prepping calls to GET {url}...")
@@ -35,7 +39,9 @@ def _call(path, raise_err=True, **kwargs):
         resp.raise_for_status()
     except (requests.HTTPError, requests.ConnectionError) as err:
         if raise_err:
-            raise err
+            if resp.status_code != 404:
+                raise err
+            raise NotFoundError
         LOGGER.error(f"Dismissed error: \n{err}")
     return resp
 

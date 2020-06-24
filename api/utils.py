@@ -21,14 +21,14 @@ from models import facebook, wit
 WIT_TOKEN = os.environ.get("WIT_TOKEN", "default")
 FB_PAGE_TOKEN = os.environ.get("FB_PAGE_TOKEN", "default")
 FB_GRAPH_API = "https://graph.facebook.com/me/messages?"
+GREETING = "Hi there, welcome to COVID-19 Tracker Chatbot!"
 GETTING_STARTED_SCRIPT = (
-    "Hi there, welcome to COVID-19 Tracker Chatbot! "
-    "We are here to provide you on number of COVID-19 infected, and death cases in countries worldwide. "
-    "Recovered case information is not supported by our current source - John Hopkins University (JHU)."
+    " am here to provide you on number of COVID-19 infected, and death cases in countries worldwide. "
+    "Recovered case information is not supported by my current source - John Hopkins University (JHU)."
 )
 INSTRUCTIONS_SCRIPT = (
     "Please enter the country and corresponding time period you want to learn about "
-    "(ie. Give me case of United States last month). If you need more information, reply with Hello."
+    "(ie. Give me COVID case of United States last month). If you need more information, reply with Hello."
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -114,34 +114,40 @@ def handle_query(countries: List[str], time: str = None):
             LOGGER.warning(f"Result: {result}")
             if not valid_time:
                 text.append(
-                    f"{source} doesn't have info for {country_name} in {time[:10]}. I'll give you the latest info."
+                    f"{source} doesn't have info for {country_name} on {time[:10]} UTC. I'll give you the latest info."
                 )
                 time = None
             text.append(
-                f"By {time[:10] if time else tracker.last_updated()}, "
+                f"By {time[:10] if time else tracker.last_updated()} UTC, "
                 f"{country_name} has {format(result.confirmed, ',d')} confirmed cases"
                 f" and {format(result.deaths, ',d')} death cases."
             )
-        except (requests.HTTPError):
+        except tracker.NotFoundError:
             text.append(
                 f"{source} doesn't support {country_name} with country code {country_code} :("
             )
-        except requests.ConnectionError:
+        except (requests.HTTPError, requests.ConnectionError):
             # TODO: add handover protocol
             text.append(f"API is currently down. Can't get the info.")
     return text
 
 
-def handle_other_intent(meaning: wit.TextMeaning):  # pylint: disable=unused-argument
+def handle_started_intent(meaning: wit.TextMeaning) -> List[str]:
     reply = []
+    pronoun = "COVID-19 Tracker Chatbot"
     if (
         meaning.traits
         and meaning.traits.greetings
         and meaning.traits.greetings[0].value
     ):
-        reply.append(GETTING_STARTED_SCRIPT)
-    reply.append(INSTRUCTIONS_SCRIPT)
+        pronoun = "We"
+        reply.append(GREETING)
+    reply.extend([f"{pronoun}{GETTING_STARTED_SCRIPT}", INSTRUCTIONS_SCRIPT])
     return reply
+
+
+def handle_oos_intent() -> List[str]:
+    return ["I don't understand your message.", INSTRUCTIONS_SCRIPT]
 
 
 def handle_query_intent(meaning: wit.TextMeaning) -> List[str]:
@@ -154,10 +160,10 @@ def handle_query_intent(meaning: wit.TextMeaning) -> List[str]:
         )
         time_arg = None
     elif time_arg:
-        reply.append(f"Time: {time_arg}")
+        LOGGER.warning(f"Time: {time_arg}")
 
     if locations_arg != "":
-        reply.append(f"Location(s):{locations_arg}")
+        LOGGER.warning(f"Location(s): {locations_arg}")
 
     LOGGER.warning(
         f"Handling query for countries {resolved_countries} & time {time_arg}..."
@@ -172,16 +178,19 @@ def handle_user_message(fb_message_object) -> List[str]:
 
     try:
         text = fb_message_object.message.text
-        reply = [f"We've received your message: {text}"]
+        reply = []
+        LOGGER.warning(f"I've received your message: {text}")
         response = WIT_CLIENT.message(msg=text)
-        LOGGER.warning(f"WIT response:\n{pf(response)}")
+        LOGGER.debug(f"WIT response:\n{pf(response)}")
         meaning = wit.TextMeaning.parse_obj(response)
         intent = meaning.intents[0].name if meaning.intents else "oos"
-        reply.append(f"Intents: {intent}")
+        LOGGER.warning(f"Intents: {intent}")
         if intent == wit.IntentName.QUERY:
             reply.extend(handle_query_intent(meaning))
+        elif intent == wit.IntentName.BEGIN:
+            reply.extend(handle_started_intent(meaning))
         else:
-            reply.extend(handle_other_intent(meaning))
+            reply.extend(handle_oos_intent())
     except Exception as err:
         LOGGER.error(f"Dismissed ERROR:\n{pf(err)}")
     return "\n".join(reply)
