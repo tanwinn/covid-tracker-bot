@@ -1,7 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/tanwinn/covid-tracker-bot/badge.svg?branch=thanh)](https://coveralls.io/github/tanwinn/covid-tracker-bot?branch=thanh)
 
 # Covid Tracker Chatbot
-Messenger Chatbot powered by [wit.ai](https://github.com/wit-ai/pywit) and Facebook Messenger for [Covid tracker](https://github.com/ExpDev07/coronavirus-tracker-api)
+Messenger Chatbot powered by [wit.ai](https://github.com/wit-ai/pywit) and Facebook Messenger for [Covid Tracker API](https://github.com/ExpDev07/coronavirus-tracker-api). Submission for [Facebook Wit AI Hackathon 2020](https://devpost.com/software/covid-tracker-bot).
 
 Facebook Messenger Chatbot (InDev): [m.me/CovidTrackerChatbot](https://www.facebook.com/CovidTrackerChatbot/)
 
@@ -11,8 +11,7 @@ Deployed bot: https://covid-tracker-chatbot.herokuapp.com/ | https://github.com/
 
 Tracking API: https://covid-tracker-us.herokuapp.com/ | https://github.com/ExpDev07/coronavirus-tracker-api
 
-Submission for [Wit AI hackathon](https://fbai2.devpost.com/?ref_content=default&ref_feature=challenge&ref_medium=portfolio)
-
+Demo video: https://youtu.be/GWIwydrHSQw
 
 ![Chatbot_demo](https://raw.githubusercontent.com/tanwinn/covid-tracker-bot/master/chatbot-demo.png)
 
