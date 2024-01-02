@@ -6,7 +6,7 @@ Wit models
 import enum
 from typing import Dict, List
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, model_validator
 
 
 class Coordinations(BaseModel):
@@ -46,7 +46,7 @@ class WitLocation(BaseModel):
     body: str = Field(..., description="Literal content from the original text")
     type: WitLocationType
 
-    @root_validator
+    @model_validator(mode="after")
     @classmethod
     def root_validator(cls, values):
         if (

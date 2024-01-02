@@ -81,7 +81,7 @@ def handle_location(meaning: wit.TextMeaning) -> (str, List[str]):
 
 
 def handle_time(meaning: wit.TextMeaning) -> str:
-    """"Extract time info from wit"""
+    """ "Extract time info from wit"""
     # one day specifically
     times = meaning.entities.datetime
     time_arg = None
@@ -148,7 +148,10 @@ def handle_started_intent(meaning: wit.TextMeaning) -> List[str]:
 
 
 def handle_oos_intent() -> List[str]:
-    return ["I don't understand your message.", INSTRUCTIONS_SCRIPT + " " + EXTRA_SCRIPT]
+    return [
+        "I don't understand your message.",
+        INSTRUCTIONS_SCRIPT + " " + EXTRA_SCRIPT,
+    ]
 
 
 def handle_query_intent(meaning: wit.TextMeaning) -> List[str]:

@@ -5,7 +5,7 @@ Facebook Message models
 """
 from typing import Dict, List
 
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, Field, model_validator, validator
 
 
 class User(BaseModel):
@@ -23,7 +23,7 @@ class Message(BaseModel):
     reply_to: Dict = None
     attachments: Dict = None
 
-    @root_validator
+    @model_validator(mode="after")
     @classmethod
     def must_have_content(cls, values):
         if all([values.get(k) is None for k in ["text", "quick_reply", "attachments"]]):
